@@ -1,0 +1,125 @@
+<!--estancos.html-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estancos Cercanos</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          crossorigin=""/>
+</head>
+<body>
+    <div class="cabecera-contenedor">
+        <div class="cabecera-principal">
+            <div class="icono icono-usuario">
+                <div class="usuario-circulo">
+                    <img src="img/icono-usuario.png" alt="Icono de Usuario">
+                </div>
+            </div>
+            <div class="logo">
+                <a href="index.html"><img src="img/smokecan-logo.png"alt="Logo SMOKECAN"></a>
+            </div>
+            <div class="icono icono-menu" role="button" aria-label="Menú de Navegación">
+                <div class="barra"></div>
+                <div class="barra"></div>
+                <div class="barra"></div>
+            </div>
+        </div>
+        <div class="cabecera-navegacion">
+            <div class="enlaces-nav">
+                <div class="enlace-item"><a href="index.html#informacion">Información</a></div>
+                <div class="enlace-item"><a href="index.html#novedades">Novedades</a></div>
+                <div class="enlace-item"><a href="foro.html">Foro Smokecan</a></div>
+                <div class="enlace-item"><a href="estancos.html">Estancos</a></div> </div>
+        </div>
+    </div>
+
+    <main class="estancos-main">
+        <div class="estancos-controles">
+            <div class="estancos-buscar-caja">
+                <input type="text" id="estancos-input-buscador" placeholder="Buscar estanco en Molins..." class="estancos-buscar-input">
+                <button class="estancos-buscar-btn" aria-label="Buscar"><i class="fa fa-search"></i></button>
+            </div>
+            <button class="estancos-filtro-btn">Filtrar</button>
+        </div>
+
+        <div class="estancos-contenido-grid">
+            
+            <div class="estancos-resultados-columna">
+                
+                <div class="tarjeta-estanco">
+                    <p class="estanco-nombre">Estanco Passeig de Pi i Margall</p>
+                    <img src="img/estanco1.png" alt="Estanco" class="estanco-imagen">
+                    <button class="estanco-btn">Ir</button>
+                </div>
+                <div class="tarjeta-estanco">
+                    <p class="estanco-nombre">Estanc Molins</p>
+                    <img src="img/estanco2.png" alt="Estanco" class="estanco-imagen">
+                    <button class="estanco-btn">Ir</button>
+                </div>
+                <div class="tarjeta-estanco">
+                    <p class="estanco-nombre">TABACS L'ESTANC DE LA PLAÇA MOLINS DE REI
+
+</p>
+                    <img src="img/estanco3.png" alt="Estanco" class="estanco-imagen">
+                    <button class="estanco-btn">Ir</button>
+                </div>
+            </div>
+
+            <div id="mapa-estancos-contenedor" class="estancos-mapa-caja">
+                </div>
+        </div>
+    </main>
+
+    <footer class="footer-contenedor">
+        <div class="footer-columnas">
+            <div class="footer-columna">
+                <h3 class="footer-titulo-principal">Smokecan</h3>
+                <p class="footer-texto">Tu guía de zonas libres de humo</p>
+            </div>
+            <div class="footer-columna">
+                <h3 class="footer-titulo">Información importante</h3>
+                <ul class="footer-lista">
+                    <li><a href="#">Sobre la nueva Ley</a></li>
+                    <li><a href="#">Política de Privacidad</a></li>
+                    <li><a href="#">Aviso legal y</a></li>
+                    <li><a href="#">Términos de Uso</a></li>
+                </ul>
+            </div>
+            <div class="footer-columna">
+                <h3 class="footer-titulo">Ayuda y Contacto</h3>
+                <p class="footer-texto">Contacto: smokecancompany@gmail.com</p>
+            </div>
+            <div class="footer-columna">
+                <h3 class="footer-titulo">Redes Sociales</h3>
+                <div class="redes-sociales">
+                    <a href="#" aria-label="Instagram" class="social-link">
+                        <img src="img/instagram-icon.png" alt="Instagram" class="social-icon-img">
+                    </a>
+                    <a href="#" aria-label="X (Twitter)" class="social-link">
+                        <img src="img/x-icon.png" alt="X (Twitter)" class="social-icon-img">
+                    </a>
+                    <a href="#" aria-label="Facebook" class="social-link">
+                        <img src="img/facebook-icon.png" alt="Facebook" class="social-icon-img">
+                    </a>
+                    <a href="#" aria-label="LinkedIn" class="social-link">
+                        <img src="img/linkedin-icon.png" alt="LinkedIn" class="social-icon-img">
+                    </a>
+                    <a href="#" aria-label="TikTok" class="social-link">
+                        <img src="img/tiktok-icon.png" alt="TikTok" class="social-icon-img">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p><strong>Smokecan</strong> ©2025 Smokecan | Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            crossorigin=""></script>
+            
+    <script src="js/estancos_mapa.js"></script> 
+</body>
+</html>
