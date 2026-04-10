@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<!--index.html-->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zonas Libres de Humo</title>
+    <title>Zonas Libres de Humo | Smokecan</title>
+    <link rel="icon" type="image/png" href="img/smokecan-logo.png">
+    
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 </head>
 <body>
     <div class="cabecera-contenedor">
@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="logo">
-                <a href="index.html"><img src="img/smokecan-logo.png"alt="Logo SMOKECAN"></a>
+                <a href="index.html"><img src="img/smokecan-logo.png" alt="Logo SMOKECAN"></a>
             </div>
             <div class="icono icono-menu" role="button" aria-label="Menú de Navegación">
                 <div class="barra"></div>
@@ -39,7 +39,6 @@
     </div>
     
     <div class="mapa-caja">
-        
         <input id="input-buscador" type="text" placeholder="Buscar calles en Molins de Rei..." autocomplete="off">
         <div id="controles-filtro">
             <button class="filtro-btn" onclick="filtrarMarcadores('todos')">Todo</button>
@@ -47,7 +46,6 @@
             <button class="filtro-btn" onclick="filtrarMarcadores('terraza')">Terrazas</button>
             <button class="filtro-btn" onclick="filtrarMarcadores('edificio')">Edificios</button>
         </div>
-        
         <div id="mapa-contenedor"></div>
     </div>
     
@@ -65,7 +63,6 @@
         <h1 class="comunidad-subtitulo">¡La información es Poder!</h1>
         
         <div class="comunidad-cards-contenedor">
-            
             <div class="card">
                 <img src="img/card1_fiabilidad.png" alt="Persona usando el móvil" class="card-imagen">
                 <div class="card-cuerpo">
@@ -89,35 +86,28 @@
                     <p class="card-texto-secundario">Ayúdanos a respirar tranquilos</p>
                 </div>
             </div>
-            
         </div>
     </section>
     
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            crossorigin=""></script>
-            
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="js/mapa.js"></script> 
+    
     <footer class="footer-contenedor">
         <div class="footer-columna">
             <h3 class="footer-titulo">Redes Sociales</h3>
             <div class="redes-sociales">
-                
                 <a href="#" aria-label="Instagram" class="social-link">
                     <img src="img/instagram-icon.png" alt="Instagram" class="social-icon-img">
                 </a>
-                
                 <a href="#" aria-label="X (Twitter)" class="social-link">
                     <img src="img/x-icon.png" alt="X (Twitter)" class="social-icon-img">
                 </a>
-                
                 <a href="#" aria-label="Facebook" class="social-link">
                     <img src="img/facebook-icon.png" alt="Facebook" class="social-icon-img">
                 </a>
-                
                 <a href="#" aria-label="LinkedIn" class="social-link">
                     <img src="img/linkedin-icon.png" alt="LinkedIn" class="social-icon-img">
                 </a>
-                
                 <a href="#" aria-label="TikTok" class="social-link">
                     <img src="img/tiktok-icon.png" alt="TikTok" class="social-icon-img">
                 </a>

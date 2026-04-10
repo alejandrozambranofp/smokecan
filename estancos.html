@@ -1,24 +1,25 @@
-<!--estancos.html-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estancos Cercanos</title>
+    <title>Estancos Cercanos | Smokecan</title>
+    <link rel="icon" type="image/png" href="img/smokecan-logo.png">
+    
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          crossorigin=""/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 </head>
 <body>
-    <div class="cabecera-contenedor">
+    <header class="cabecera-contenedor">
         <div class="cabecera-principal">
             <div class="usuario-circulo">
-                    <a href="login.php">
-                        <img src="img/icono-usuario.png" alt="Icono de Usuario">
-                    </a>
-                </div>
+                <a href="login.php">
+                    <img src="img/icono-usuario.png" alt="Icono de Usuario">
+                </a>
+            </div>
             <div class="logo">
-                <a href="index.html"><img src="img/smokecan-logo.png"alt="Logo SMOKECAN"></a>
+                <a href="index.html"><img src="img/smokecan-logo.png" alt="Logo SMOKECAN"></a>
             </div>
             <div class="icono icono-menu" role="button" aria-label="Menú de Navegación">
                 <div class="barra"></div>
@@ -26,50 +27,48 @@
                 <div class="barra"></div>
             </div>
         </div>
-        <div class="cabecera-navegacion">
+        <nav class="cabecera-navegacion">
             <div class="enlaces-nav">
                 <div class="enlace-item"><a href="index.html#informacion">Información</a></div>
                 <div class="enlace-item"><a href="index.html#novedades">Novedades</a></div>
                 <div class="enlace-item"><a href="foro.html">Foro Smokecan</a></div>
-                <div class="enlace-item"><a href="estancos.html">Estancos</a></div> </div>
-        </div>
-    </div>
+                <div class="enlace-item"><a href="estancos.html" class="activo">Estancos</a></div> 
+            </div>
+        </nav>
+    </header>
 
     <main class="estancos-main">
-        <div class="estancos-controles">
+        <section class="estancos-controles">
             <div class="estancos-buscar-caja">
-                <input type="text" id="estancos-input-buscador" placeholder="Buscar estanco en Molins..." class="estancos-buscar-input">
+                <input type="text" id="estancos-input-buscador" placeholder="Buscar estanco o calle en Molins..." class="estancos-buscar-input">
                 <button class="estancos-buscar-btn" aria-label="Buscar"><i class="fa fa-search"></i></button>
             </div>
             <button class="estancos-filtro-btn">Filtrar</button>
-        </div>
+        </section>
 
-        <div class="estancos-contenido-grid">
+        <section class="estancos-contenido-grid">
             
             <div class="estancos-resultados-columna">
-                
-                <div class="tarjeta-estanco">
+                <article class="tarjeta-estanco">
                     <p class="estanco-nombre">Estanco Passeig de Pi i Margall</p>
-                    <img src="img/estanco1.png" alt="Estanco" class="estanco-imagen">
-                    <button class="estanco-btn">Ir</button>
-                </div>
-                <div class="tarjeta-estanco">
-                    <p class="estanco-nombre">Estanc Molins</p>
-                    <img src="img/estanco2.png" alt="Estanco" class="estanco-imagen">
-                    <button class="estanco-btn">Ir</button>
-                </div>
-                <div class="tarjeta-estanco">
-                    <p class="estanco-nombre">TABACS L'ESTANC DE LA PLAÇA MOLINS DE REI
-
-</p>
-                    <img src="img/estanco3.png" alt="Estanco" class="estanco-imagen">
-                    <button class="estanco-btn">Ir</button>
-                </div>
+                    <img src="img/estanco1.png" alt="Estanco" class="estanco-imagen" onerror="this.src='https://via.placeholder.com/60?text=Estanco'">
+                    <button class="estanco-btn" data-index="0">Ir</button>
+                </article>
+                <article class="tarjeta-estanco">
+                    <p class="estanco-nombre">Estanc Molins Avinguda de València</p>
+                    <img src="img/estanco2.png" alt="Estanco" class="estanco-imagen" onerror="this.src='https://via.placeholder.com/60?text=Estanco'">
+                    <button class="estanco-btn" data-index="1">Ir</button>
+                </article>
+                <article class="tarjeta-estanco">
+                    <p class="estanco-nombre">TABACS L'ESTANC CARRER JACINT VERDAGUER</p>
+                    <img src="img/estanco3.png" alt="Estanco" class="estanco-imagen" onerror="this.src='https://via.placeholder.com/60?text=Estanco'">
+                    <button class="estanco-btn" data-index="2">Ir</button>
+                </article>
             </div>
 
-            <div id="mapa-estancos-contenedor" class="estancos-mapa-caja">
-                </div>
-        </div>
+            <div id="mapa-estancos-contenedor" class="estancos-mapa-caja"></div>
+            
+        </section>
     </main>
 
     <footer class="footer-contenedor">
@@ -83,7 +82,7 @@
                 <ul class="footer-lista">
                     <li><a href="#">Sobre la nueva Ley</a></li>
                     <li><a href="#">Política de Privacidad</a></li>
-                    <li><a href="#">Aviso legal y</a></li>
+                    <li><a href="#">Aviso legal</a></li>
                     <li><a href="#">Términos de Uso</a></li>
                 </ul>
             </div>
@@ -95,19 +94,19 @@
                 <h3 class="footer-titulo">Redes Sociales</h3>
                 <div class="redes-sociales">
                     <a href="#" aria-label="Instagram" class="social-link">
-                        <img src="img/instagram-icon.png" alt="Instagram" class="social-icon-img">
+                        <img src="img/instagram-icon.png" alt="Instagram" class="social-icon-img" onerror="this.style.display='none'">
                     </a>
                     <a href="#" aria-label="X (Twitter)" class="social-link">
-                        <img src="img/x-icon.png" alt="X (Twitter)" class="social-icon-img">
+                        <img src="img/x-icon.png" alt="X (Twitter)" class="social-icon-img" onerror="this.style.display='none'">
                     </a>
                     <a href="#" aria-label="Facebook" class="social-link">
-                        <img src="img/facebook-icon.png" alt="Facebook" class="social-icon-img">
+                        <img src="img/facebook-icon.png" alt="Facebook" class="social-icon-img" onerror="this.style.display='none'">
                     </a>
                     <a href="#" aria-label="LinkedIn" class="social-link">
-                        <img src="img/linkedin-icon.png" alt="LinkedIn" class="social-icon-img">
+                        <img src="img/linkedin-icon.png" alt="LinkedIn" class="social-icon-img" onerror="this.style.display='none'">
                     </a>
                     <a href="#" aria-label="TikTok" class="social-link">
-                        <img src="img/tiktok-icon.png" alt="TikTok" class="social-icon-img">
+                        <img src="img/tiktok-icon.png" alt="TikTok" class="social-icon-img" onerror="this.style.display='none'">
                     </a>
                 </div>
             </div>
@@ -117,9 +116,7 @@
         </div>
     </footer>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            crossorigin=""></script>
-            
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="js/estancos_mapa.js"></script> 
 </body>
 </html>

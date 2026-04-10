@@ -1,104 +1,108 @@
-//mapa.js
-let mapaHome;
-let marcadoresZonas = [];
-let marcadoresEstancos = [];
+let mapaPrincipal;
+let circulosZonas = []; // Aquí guardaremos los círculos para poder filtrarlos
 
-// Coordenadas EXACTAS del centro de Molins de Rei
+// Coordenadas centrales de Molins de Rei
 const centroMolins = [41.4137, 2.0158];
 
-// 1. ZONAS LIBRES DE HUMO (Solo en Molins)
-const zonasMolins = [
-    { nombre: "Parque de la Mariona", lat: 41.4152, lng: 2.0140, tipo: "parque" },
-    { nombre: "Plaça de la Vila", lat: 41.4138, lng: 2.0158, tipo: "edificio" },
-    { nombre: "Biblioteca El Molí", lat: 41.4120, lng: 2.0145, tipo: "edificio" }
+// Base de datos simulada de Zonas Libres de Humo en Molins
+const zonasLibresDeHumo = [ 
+    // Parques (Radio más amplio)
+    { nombre: "Parc de la Mariona", lat: 41.4115, lng: 2.0162, radio: 90, tipo: "parque" },
+    { nombre: "Parc del Pont de la Cadena", lat: 41.4095, lng: 2.0205, radio: 75, tipo: "parque" },
+    
+    // Edificios (Hospitales, colegios, ayuntamiento)
+    { nombre: "CAP Molins de Rei (Centro de Salud)", lat: 41.4131, lng: 2.0130, radio: 50, tipo: "edificio" },
+    { nombre: "Plaça de l'Ajuntament", lat: 41.4142, lng: 2.0155, radio: 45, tipo: "edificio" },
+    { nombre: "Escola Josep Maria Madorell", lat: 41.4155, lng: 2.0140, radio: 60, tipo: "edificio" },
+    
+    // Terrazas / Paseos
+    { nombre: "Passeig de Pi i Margall", lat: 41.4136, lng: 2.0164, radio: 80, tipo: "terraza" },
+    { nombre: "Terraza El Racó", lat: 41.4148, lng: 2.0170, radio: 25, tipo: "terraza" }
 ];
-
-// 2. ESTANCOS (Solo en Molins)
-const estancosMolins = [
-    { nombre: "Estanc Molins nº1 - Pi i Margall", lat: 41.4136, lng: 2.0164 },
-    { nombre: "Estanc nº2 - Avinguda de València", lat: 41.4115, lng: 2.0190 },
-    { nombre: "Estanc nº3 - Carrer Jacint Verdaguer", lat: 41.4104, lng: 2.0145 }
-];
-
-// Icono Rojo para identificar los estancos
-const iconoEstanco = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-});
 
 function iniciarMapa() {
-    // Si ya hay un mapa lo quitamos para que no de error
-    if (mapaHome) { mapaHome.remove(); }
+    // 1. Inicializar el mapa
+    mapaPrincipal = L.map('mapa-contenedor').setView(centroMolins, 15);
 
-    mapaHome = L.map('mapa-contenedor').setView(centroMolins, 16);
-
+    // 2. Añadir la capa visual (el diseño del mapa)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap'
-    }).addTo(mapaHome);
+        attribution: '&copy; OpenStreetMap',
+        maxZoom: 19
+    }).addTo(mapaPrincipal);
 
-    cargarTodo();
-    configurarBuscador();
+    // Solución para que el mapa no se vea cortado al cargar
+    setTimeout(() => { mapaPrincipal.invalidateSize(); }, 200);
+
+    // 3. Dibujar las zonas iniciales (todas)
+    dibujarZonas('todos');
+    
+    // 4. Configurar el buscador
+    configurarBuscadorPrincipal();
 }
 
-function cargarTodo() {
-    // Cargar Zonas (Azules por defecto)
-    zonasMolins.forEach(z => {
-        const m = L.marker([z.lat, z.lng], { tipo: z.tipo })
-            .addTo(mapaHome)
-            .bindPopup(`<b>${z.nombre}</b><br>Molins de Rei`);
-        marcadoresZonas.push(m);
-    });
+// Función para pintar los círculos rojos
+function dibujarZonas(filtro) {
+    // Primero borramos los círculos que ya existan en el mapa (para que el filtro funcione limpio)
+    circulosZonas.forEach(circulo => mapaPrincipal.removeLayer(circulo));
+    circulosZonas = []; // Vaciamos la lista
 
-    // Cargar Estancos (Rojos)
-    estancosMolins.forEach(e => {
-        const m = L.marker([e.lat, e.lng], { icon: iconoEstanco, tipo: 'estanco' })
-            .addTo(mapaHome)
-            .bindPopup(`<b>${e.nombre}</b><br>Estanco en Molins`);
-        marcadoresEstancos.push(m);
+    // Recorremos nuestras zonas y pintamos las que coincidan con el filtro
+    zonasLibresDeHumo.forEach(zona => {
+        if (filtro === 'todos' || zona.tipo === filtro) {
+            
+            // L.circle dibuja un radio en el mapa
+            const circulo = L.circle([zona.lat, zona.lng], {
+                color: '#ff4500',      // Color del borde del círculo (Naranja/Rojo Smokecan)
+                fillColor: '#ff4500',  // Color de relleno
+                fillOpacity: 0.35,     // Transparencia del relleno (0.0 a 1.0)
+                radius: zona.radio     // Radio de prohibición en metros
+            }).addTo(mapaPrincipal);
+
+            // Añadimos el cartelito (Popup) al hacer clic en el círculo
+            circulo.bindPopup(`
+                <div style="text-align:center;">
+                    <b style="color: #ff4500; font-size: 14px;">🚫 ${zona.nombre}</b><br>
+                    <span style="font-size: 12px; color: #555;">Zona Libre de Humo</span><br>
+                    <i style="font-size: 11px;">Multa estimada: 50€ - 500€</i>
+                </div>
+            `);
+            
+            // Guardamos el círculo en la lista
+            circulosZonas.push(circulo);
+        }
     });
 }
 
-function configurarBuscador() {
+// Esta función se llama desde los botones HTML (onclick="filtrarMarcadores('parque')")
+function filtrarMarcadores(tipo) {
+    dibujarZonas(tipo);
+}
+
+function configurarBuscadorPrincipal() {
     const input = document.getElementById("input-buscador");
+    
     if (!input) return;
 
     input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            const busqueda = input.value.toLowerCase().trim();
-
-            if (busqueda === "estanco" || busqueda === "estancos") {
-                // Al buscar "estanco", vamos al primero de la lista y abrimos su información
-                mapaHome.flyTo([estancosMolins[0].lat, estancosMolins[0].lng], 17);
-                marcadoresEstancos[0].openPopup();
-            } else {
-                // Búsqueda normal de calles
-                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(busqueda + ", Molins de Rei")}&limit=1`)
+            const texto = input.value.toLowerCase().trim();
+            if (texto !== "") {
+                // Buscamos la calle usando Nominatim de OpenStreetMap
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(texto + ", Molins de Rei")}&limit=1`)
                     .then(res => res.json())
                     .then(data => {
                         if (data.length > 0) {
-                            mapaHome.flyTo([data[0].lat, data[0].lon], 18);
+                            // Volamos hacia la calle buscada
+                            mapaPrincipal.flyTo([data[0].lat, data[0].lon], 17, { animate: true, duration: 1.5 });
+                        } else {
+                            alert("No se encontró la ubicación en Molins de Rei. Prueba a poner el nombre de una calle.");
                         }
-                    });
+                    })
+                    .catch(err => console.error("Error en búsqueda:", err));
             }
         }
     });
 }
 
-// Para que los botones de filtro funcionen
-function filtrarMarcadores(tipo) {
-    // Unimos todas las listas para filtrar
-    const todos = [...marcadoresZonas, ...marcadoresEstancos];
-    todos.forEach(m => {
-        if (tipo === 'todos' || m.options.tipo === tipo) {
-            mapaHome.addLayer(m);
-        } else {
-            mapaHome.removeLayer(m);
-        }
-    });
-}
-
+// Iniciar el mapa cuando la página termine de cargar
 document.addEventListener('DOMContentLoaded', iniciarMapa);
