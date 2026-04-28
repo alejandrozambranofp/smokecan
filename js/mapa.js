@@ -3,19 +3,23 @@ let circulosZonas = [];
 let marcadoresPuntos = [];
 
 // Coordenadas centrales de Molins de Rei
-const centroMolins = [41.4137, 2.0158];
+const centroMolins = [41.4138, 2.0158];
 
-// Base de datos de Puntos y Zonas
+// Capa de Mapa Premium (CartoDB Voyager - Limpia y profesional)
+const TILE_URL = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+const TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
+// Base de datos de Puntos y Zonas (Coordenadas verificadas)
 const baseDeDatos = {
     zonas: [
-        { nombre: "Parc de la Mariona", lat: 41.4072, lng: 2.0225, radio: 110, tipo: "parque", nivel: "prohibido" },
-        { nombre: "Parc del Pont de la Cadena", lat: 41.4083, lng: 2.0163, radio: 85, tipo: "parque", nivel: "prohibido" },
-        { nombre: "CAP Molins de Rei (Hospital)", lat: 41.4111, lng: 2.0108, radio: 65, tipo: "hospital", nivel: "prohibido" },
-        { nombre: "Ajuntament de Molins", lat: 41.4144, lng: 2.0163, radio: 50, tipo: "edificio", nivel: "prohibido" },
-        { nombre: "Escola Josep Maria Madorell", lat: 41.4161, lng: 2.0135, radio: 75, tipo: "colegio", nivel: "prohibido" },
+        { nombre: "Parc de la Mariona", lat: 41.4057, lng: 2.0221, radio: 110, tipo: "parque", nivel: "prohibido" },
+        { nombre: "Parc del Pont de la Cadena", lat: 41.4080, lng: 2.0192, radio: 85, tipo: "parque", nivel: "prohibido" },
+        { nombre: "CAP Molins de Rei (Hospital)", lat: 41.4145, lng: 2.0166, radio: 65, tipo: "hospital", nivel: "prohibido" },
+        { nombre: "Ajuntament de Molins", lat: 41.4138, lng: 2.0158, radio: 50, tipo: "edificio", nivel: "prohibido" },
+        { nombre: "Escola Josep Maria Madorell", lat: 41.4162, lng: 2.0135, radio: 75, tipo: "colegio", nivel: "prohibido" },
         { nombre: "Passeig de Pi i Margall", lat: 41.4136, lng: 2.0164, radio: 90, tipo: "terraza", nivel: "no-recomendado" },
         { nombre: "Terraza El Racó", lat: 41.4148, lng: 2.0170, radio: 30, tipo: "terraza", nivel: "no-recomendado" },
-        { nombre: "Biblioteca El Molí", lat: 41.4051, lng: 2.0203, radio: 55, tipo: "edificio", nivel: "prohibido" },
+        { nombre: "Biblioteca El Molí", lat: 41.4129, lng: 2.0147, radio: 55, tipo: "edificio", nivel: "prohibido" },
         { nombre: "Zona Deportiva Municipal", lat: 41.4165, lng: 2.0110, radio: 110, tipo: "parque", nivel: "prohibido" }
     ],
     puntos: [
@@ -27,7 +31,7 @@ const baseDeDatos = {
     ]
 };
 
-// Configuración de iconos
+// Configuración de iconos (FontAwesome)
 const iconos = {
     parque: '<i class="fa-solid fa-tree"></i>',
     hospital: '<i class="fa-solid fa-hospital"></i>',
@@ -39,48 +43,60 @@ const iconos = {
 };
 
 function iniciarMapa() {
-    mapaPrincipal = L.map('mapa-contenedor').setView(centroMolins, 15);
+    // Inicializar el mapa con opciones de limpieza
+    mapaPrincipal = L.map('mapa-contenedor', {
+        zoomControl: false, // Lo moveremos para que no estorbe
+        scrollWheelZoom: true
+    }).setView(centroMolins, 16);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 19
+    // Añadir controles de zoom en una posición más limpia
+    L.control.zoom({ position: 'topright' }).addTo(mapaPrincipal);
+
+    // Capa visual Premium
+    L.tileLayer(TILE_URL, {
+        attribution: TILE_ATTRIBUTION,
+        maxZoom: 20
     }).addTo(mapaPrincipal);
 
-    setTimeout(() => { mapaPrincipal.invalidateSize(); }, 200);
+    // Invalida el tamaño para evitar errores de renderizado
+    setTimeout(() => { mapaPrincipal.invalidateSize(); }, 300);
 
     dibujarMapa('todos');
     configurarBuscadorPrincipal();
 }
 
 function dibujarMapa(filtro) {
-    // Borrar todo lo anterior
+    // Limpiar capas existentes
     circulosZonas.forEach(c => mapaPrincipal.removeLayer(c));
     marcadoresPuntos.forEach(m => mapaPrincipal.removeLayer(m));
     circulosZonas = [];
     marcadoresPuntos = [];
 
-    // 1. Dibujar Zonas (Círculos)
+    const colorPrincipal = '#00796B';
+    const colorSecundario = '#4db6ac';
+
+    // 1. Dibujar Zonas de Humo
     baseDeDatos.zonas.forEach(zona => {
         if (filtro === 'todos' || zona.tipo === filtro || (filtro === 'prohibido' && zona.nivel === 'prohibido')) {
-            const color = zona.nivel === 'prohibido' ? '#00796B' : '#4db6ac'; 
-            const label = zona.nivel === 'prohibido' ? 'ZONA PROHIBIDA' : 'NO RECOMENDADO';
+            const esProhibido = zona.nivel === 'prohibido';
+            const color = esProhibido ? colorPrincipal : colorSecundario; 
             
             const circulo = L.circle([zona.lat, zona.lng], {
                 color: color,
+                weight: 2,
                 fillColor: color,
-                fillOpacity: 0.3,
+                fillOpacity: 0.2,
                 radius: zona.radio
             }).addTo(mapaPrincipal);
 
             circulo.bindPopup(`
-                <div style="text-align:center; min-width: 150px;">
-                    <div style="background:${color}; color:white; padding:5px; border-radius:5px 5px 0 0; font-weight:bold;">
-                        ${label}
+                <div class="popup-smokecan">
+                    <div class="popup-header" style="background:${color};">
+                        ${esProhibido ? 'ZONA PROHIBIDA' : 'NO RECOMENDADO'}
                     </div>
-                    <div style="padding:10px; border:1px solid ${color}; border-top:none;">
-                        <span style="font-size:16px;">${iconos[zona.tipo] || ''} <b>${zona.nombre}</b></span><br>
-                        <hr style="margin:8px 0; opacity:0.2;">
-                        <small style="color:#666;">Distancia de seguridad obligatoria</small>
+                    <div class="popup-body">
+                        <b>${iconos[zona.tipo] || ''} ${zona.nombre}</b>
+                        <p>Distancia de seguridad requerida</p>
                     </div>
                 </div>
             `);
@@ -88,22 +104,22 @@ function dibujarMapa(filtro) {
         }
     });
 
-    // 2. Dibujar Puntos (Marcadores)
+    // 2. Dibujar Puntos de Interés
     baseDeDatos.puntos.forEach(punto => {
         if (filtro === 'todos' || punto.tipo === filtro) {
             const iconoHTML = L.divIcon({
-                html: `<div style="background:white; color:#00796B; width:30px; height:30px; border-radius:50%; display:flex; justify-content:center; align-items:center; border:2px solid #00796B; box-shadow:0 2px 5px rgba(0,0,0,0.2);">${iconos[punto.tipo]}</div>`,
+                html: `<div class="marcador-premium">${iconos[punto.tipo]}</div>`,
                 className: 'custom-div-icon',
-                iconSize: [30, 30],
-                iconAnchor: [15, 15]
+                iconSize: [36, 36],
+                iconAnchor: [18, 18]
             });
 
             const marcador = L.marker([punto.lat, punto.lng], { icon: iconoHTML }).addTo(mapaPrincipal);
             
             marcador.bindPopup(`
-                <div style="text-align:center;">
-                    <b style="color:#00796B;">${iconos[punto.tipo]} ${punto.nombre}</b><br>
-                    <small>Disponible en Molins de Rei</small>
+                <div class="popup-body" style="text-align:center;">
+                    <b style="color:${colorPrincipal}; font-size:14px;">${punto.nombre}</b><br>
+                    <small>Punto verificado</small>
                 </div>
             `);
             marcadoresPuntos.push(marcador);
@@ -131,7 +147,7 @@ function mostrarNotificacion(texto) {
     if (notificacion) {
         notificacion.textContent = texto;
         notificacion.classList.remove('oculto', 'visible');
-        void notificacion.offsetWidth; // Force reflow
+        void notificacion.offsetWidth; 
         notificacion.classList.add('visible');
         
         setTimeout(() => {
@@ -160,20 +176,13 @@ function configurarBuscadorPrincipal() {
         }
     };
 
-    input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') realizarBusqueda();
-    });
-
-    if (btn) {
-        btn.addEventListener('click', realizarBusqueda);
-    }
+    input.addEventListener('keypress', (e) => { if (e.key === 'Enter') realizarBusqueda(); });
+    if (btn) btn.addEventListener('click', realizarBusqueda);
 }
 
 function toggleLeyenda() {
     const leyenda = document.getElementById('leyenda-mapa');
-    if (leyenda) {
-        leyenda.classList.toggle('colapsado');
-    }
+    if (leyenda) leyenda.classList.toggle('colapsado');
 }
 
 document.addEventListener('DOMContentLoaded', iniciarMapa);
