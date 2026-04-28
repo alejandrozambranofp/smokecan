@@ -36,15 +36,21 @@
     </div>
     
     <div id="filtro-notificacion" class="oculto"></div>
-    <div class="mapa-caja">
-        <div class="buscador-mapa-contenedor">
-            <input id="input-buscador" type="text" placeholder="Buscar calles en Molins de Rei..." autocomplete="off">
-            <button id="btn-buscar-mapa" class="btn-buscar-estilo"><i class="fa fa-search"></i></button>
+
+    <section class="buscador-mapa-contenedor">
+        <h1 class="buscador-titulo">Encuentra Zonas Libres de Humo</h1>
+        <div class="buscador-input-wrapper">
+            <input id="input-buscador" type="text" placeholder="¿Qué calle buscas en Molins?" autocomplete="off">
+            <button id="btn-buscar-mapa" class="btn-buscar-mapa">
+                <i class="fa fa-search"></i>
+            </button>
         </div>
+    </section>
+
+    <div class="mapa-caja">
         <div id="leyenda-mapa" class="colapsado">
             <div class="leyenda-header" onclick="toggleLeyenda()">
-                <h3>Filtros y Leyenda</h3>
-                <i class="fa-solid fa-chevron-down" id="leyenda-toggle-icon"></i>
+                <i class="fa-solid fa-filter" id="leyenda-toggle-icon"></i>
             </div>
             <div id="leyenda-contenido">
                 <div class="leyenda-item" onclick="filtrarMarcadores('todos')" title="Todo">
@@ -70,44 +76,37 @@
                 </div>
             </div>
         </div>
+        <button class="btn-centrar-ubicacion" onclick="centrarEnUsuario()" title="Centrar en mi ubicación">
+            <i class="fa-solid fa-location-crosshairs"></i>
+        </button>
         <div id="mapa-contenedor"></div>
     </div>
     
     <section id="informacion" class="Información">
         <div class="info-contenido">
-            <h2 class="info-titulo">¿NUEVA LEY DE ZONAS LIBRES DE HUMO?</h2>
-            <p class="info-parrafo">¡SÍ, y las reglas han cambiado! La nueva ley antitabaco amplía las restricciones, y el desconocimiento trae consigo el riesgo de multas severas.</p>
-            <p class="info-parrafo">Ahora es crucial saber que terrazas de bares, exteriores de hospitales y vapers desechables están en el punto de mira.</p>
-            <p class="info-parrafo">No te arriesgues a una sanción. Usa Smokecan para verificar de inmediato si estás en una zona libre de humo. ¡Infórmate al instante y viaja seguro!</p>
+            <h2 class="info-titulo">Tu salud, nuestra prioridad</h2>
+            <p class="info-parrafo">
+                SmokeCan te ayuda a navegar por un Molins de Rei más saludable. Localiza zonas protegidas, espacios sin humo y servicios esenciales en tiempo real.
+            </p>
         </div>
     </section>
 
     <section id="novedades" class="comunidad-smokecan">
-        <h2 class="comunidad-titulo">👍 Comunidad Smokecan:</h2>
-        <h1 class="comunidad-subtitulo">¡La información es Poder!</h1>
-        
+        <h2 class="comunidad-titulo">Únete a la Comunidad</h2>
+        <p class="comunidad-subtitulo">Respira libertad</p>
         <div class="comunidad-cards-contenedor">
             <div class="card">
-                <img src="img/card1_fiabilidad.png" alt="Persona usando el móvil" class="card-imagen">
+                <i class="fa-solid fa-comments card-imagen-icono" style="font-size: 50px; color: #00796B; margin: 20px 0;"></i>
                 <div class="card-cuerpo">
-                    <p class="card-texto-destacado">Valora la fiabilidad de cada zona marcada.</p>
-                    <p class="card-texto-secundario">Tu experiencia evita sanciones a otros.</p>
+                    <p class="card-texto-destacado">Foro Activo</p>
+                    <p class="card-texto-secundario">Comparte tus experiencias y descubre nuevos rincones.</p>
                 </div>
             </div>
-            
             <div class="card">
-                <img src="img/card2_compartir.png" alt="Apretón de manos sobre un mapa" class="card-imagen">
+                <i class="fa-solid fa-map-location-dot card-imagen-icono" style="font-size: 50px; color: #00796B; margin: 20px 0;"></i>
                 <div class="card-cuerpo">
-                    <p class="card-texto-destacado">¿Ves un cartel nuevo? ¡Compártelo!</p>
-                    <p class="card-texto-secundario">SmokeCan es más que un mapa. Es una comunidad</p>
-                </div>
-            </div>
-            
-            <div class="card">
-                <img src="img/card3_ayuda.png" alt="Icono de flechas circulares" class="card-imagen-icono">
-                <div class="card-cuerpo">
-                    <p class="card-texto-destacado">Juntos, construimos un mapa más preciso.</p>
-                    <p class="card-texto-secundario">Ayúdanos a respirar tranquilos</p>
+                    <p class="card-texto-destacado">Mapa Dinámico</p>
+                    <p class="card-texto-secundario">Actualizado por la comunidad para la comunidad.</p>
                 </div>
             </div>
         </div>

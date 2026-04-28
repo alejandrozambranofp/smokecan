@@ -65,8 +65,13 @@
                 </article>
             </div>
 
-            <div id="mapa-estancos-contenedor" class="estancos-mapa-caja">
-                <div id="leyenda-mapa" class="colapsado">
+        <div class="estancos-mapa-wrapper" style="position: relative; width: 100%; height: 500px;">
+            <button class="btn-centrar-ubicacion" onclick="centrarEnUsuario()" title="Centrar en mi ubicación">
+                <i class="fa-solid fa-location-crosshairs"></i>
+            </button>
+            <div id="mapa-estancos-contenedor" class="estancos-mapa-caja" style="width: 100%; height: 100%;"></div>
+            
+            <div id="leyenda-mapa" class="colapsado">
                     <div class="leyenda-header" onclick="toggleLeyenda()">
                         <h3>Filtros y Leyenda</h3>
                         <i class="fa-solid fa-chevron-down" id="leyenda-toggle-icon"></i>

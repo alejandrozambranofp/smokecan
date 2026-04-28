@@ -26,6 +26,9 @@ const zonasLibresDeHumo = [
     { nombre: "Terraza El Racó", lat: 41.4148, lng: 2.0170, radio: 30 }
 ];
 
+let marcadorUsuario;
+let circuloPrecision;
+
 function iniciarMapaEstancos() {
     mapaEstancos = L.map('mapa-estancos-contenedor', {
         zoomControl: false
@@ -37,6 +40,31 @@ function iniciarMapaEstancos() {
         attribution: TILE_ATTRIBUTION,
         maxZoom: 20
     }).addTo(mapaEstancos);
+
+    // --- UBICACIÓN EN TIEMPO REAL ---
+    mapaEstancos.locate({ setView: false, watch: true, enableHighAccuracy: true });
+
+    mapaEstancos.on('locationfound', (e) => {
+        if (marcadorUsuario) {
+            marcadorUsuario.setLatLng(e.latlng);
+            circuloPrecision.setLatLng(e.latlng);
+        } else {
+            const iconoUsuario = L.divIcon({
+                html: '<div class="usuario-pulso"></div>',
+                className: 'custom-div-icon',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+            marcadorUsuario = L.marker(e.latlng, { icon: iconoUsuario }).addTo(mapaEstancos);
+            circuloPrecision = L.circle(e.latlng, e.accuracy / 2, {
+                color: '#2196F3',
+                fillColor: '#2196F3',
+                fillOpacity: 0.1,
+                weight: 1
+            }).addTo(mapaEstancos);
+            marcadorUsuario.bindPopup("Tu ubicación").openPopup();
+        }
+    });
 
     setTimeout(() => { mapaEstancos.invalidateSize(); }, 300);
 
@@ -125,6 +153,14 @@ function mostrarNotificacion(texto) {
         void notificacion.offsetWidth;
         notificacion.classList.add('visible');
         setTimeout(() => { notificacion.classList.remove('visible'); }, 1500);
+    }
+}
+
+function centrarEnUsuario() {
+    if (marcadorUsuario) {
+        mapaEstancos.flyTo(marcadorUsuario.getLatLng(), 18, { animate: true, duration: 1.5 });
+    } else {
+        alert("Aún no hemos encontrado tu ubicación. Asegúrate de dar permisos de GPS.");
     }
 }
 

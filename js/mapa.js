@@ -42,23 +42,58 @@ const iconos = {
     terraza: '<i class="fa-solid fa-chair"></i>'
 };
 
+let marcadorUsuario;
+let circuloPrecision;
+
 function iniciarMapa() {
     // Inicializar el mapa con opciones de limpieza
     mapaPrincipal = L.map('mapa-contenedor', {
-        zoomControl: false, // Lo moveremos para que no estorbe
+        zoomControl: false,
         scrollWheelZoom: true
     }).setView(centroMolins, 16);
 
-    // Añadir controles de zoom en una posición más limpia
     L.control.zoom({ position: 'topright' }).addTo(mapaPrincipal);
 
-    // Capa visual Premium
     L.tileLayer(TILE_URL, {
         attribution: TILE_ATTRIBUTION,
         maxZoom: 20
     }).addTo(mapaPrincipal);
 
-    // Invalida el tamaño para evitar errores de renderizado
+    // --- GEOLOCALIZACIÓN EN TIEMPO REAL ---
+    mapaPrincipal.locate({ setView: false, watch: true, enableHighAccuracy: true });
+
+    mapaPrincipal.on('locationfound', (e) => {
+        const radio = e.accuracy / 2;
+
+        if (marcadorUsuario) {
+            marcadorUsuario.setLatLng(e.latlng);
+            circuloPrecision.setLatLng(e.latlng);
+            circuloPrecision.setRadius(radio);
+        } else {
+            // Icono de pulso azul para el usuario
+            const iconoUsuario = L.divIcon({
+                html: '<div class="usuario-pulso"></div>',
+                className: 'custom-div-icon',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+
+            marcadorUsuario = L.marker(e.latlng, { icon: iconoUsuario }).addTo(mapaPrincipal);
+            circuloPrecision = L.circle(e.latlng, radio, {
+                color: '#2196F3',
+                fillColor: '#2196F3',
+                fillOpacity: 0.15,
+                weight: 1
+            }).addTo(mapaPrincipal);
+            
+            marcadorUsuario.bindPopup("Estás aquí").openPopup();
+        }
+    });
+
+    mapaPrincipal.on('locationerror', (e) => {
+        console.warn("No se pudo obtener la ubicación:", e.message);
+    });
+
     setTimeout(() => { mapaPrincipal.invalidateSize(); }, 300);
 
     dibujarMapa('todos');
@@ -178,6 +213,14 @@ function configurarBuscadorPrincipal() {
 
     input.addEventListener('keypress', (e) => { if (e.key === 'Enter') realizarBusqueda(); });
     if (btn) btn.addEventListener('click', realizarBusqueda);
+}
+
+function centrarEnUsuario() {
+    if (marcadorUsuario) {
+        mapaPrincipal.flyTo(marcadorUsuario.getLatLng(), 18, { animate: true, duration: 1.5 });
+    } else {
+        alert("Aún no hemos encontrado tu ubicación. Asegúrate de dar permisos de GPS.");
+    }
 }
 
 function toggleLeyenda() {
