@@ -13,9 +13,7 @@
 <body>
     <header class="cabecera-contenedor">
         <div class="cabecera-principal">
-            <div>
-                <a href="logout.php"><h3>SALIR</h3></a>
-            </div>
+            <div></div>
             <div class="logo">
                 <a href="index.html"><img src="img/smokecan-logo.png" alt="Logo SMOKECAN"></a>
             </div>
@@ -31,19 +29,20 @@
             <div class="enlaces-nav">
                 <div class="enlace-item"><a href="index.html#informacion">Información</a></div>
                 <div class="enlace-item"><a href="index.html#novedades">Novedades</a></div>
-                <div class="enlace-item"><a href="foro.html">Foro Smokecan</a></div>
+                <div class="enlace-item"><a href="foro.php">Foro Smokecan</a></div>
                 <div class="enlace-item"><a href="estancos.html" class="activo">Estancos</a></div> 
             </div>
         </nav>
     </header>
 
+    <div id="filtro-notificacion" class="oculto"></div>
     <main class="estancos-main">
         <section class="estancos-controles">
             <div class="estancos-buscar-caja">
                 <input type="text" id="estancos-input-buscador" placeholder="Buscar estanco o calle en Molins..." class="estancos-buscar-input">
                 <button class="estancos-buscar-btn" aria-label="Buscar"><i class="fa fa-search"></i></button>
             </div>
-            <button class="estancos-filtro-btn">Filtrar</button>
+            <button class="estancos-filtro-btn" onclick="toggleLeyenda()">Filtrar</button>
         </section>
 
         <section class="estancos-contenido-grid">
@@ -66,7 +65,25 @@
                 </article>
             </div>
 
-            <div id="mapa-estancos-contenedor" class="estancos-mapa-caja"></div>
+            <div id="mapa-estancos-contenedor" class="estancos-mapa-caja">
+                <div id="leyenda-mapa" class="colapsado">
+                    <div class="leyenda-header" onclick="toggleLeyenda()">
+                        <h3>Filtros y Leyenda</h3>
+                        <i class="fa-solid fa-chevron-down" id="leyenda-toggle-icon"></i>
+                    </div>
+                    <div id="leyenda-contenido">
+                        <div class="leyenda-item" onclick="filtrarEstancos('todos')" title="Todo">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <div class="leyenda-item" onclick="filtrarEstancos('estanco')" title="Estancos">
+                            <i class="fa-solid fa-smoking" style="color: #00796B;"></i>
+                        </div>
+                        <div class="leyenda-item" onclick="filtrarEstancos('zona')" title="Zonas Libres">
+                            <i class="fa-solid fa-ban" style="color: #00796B;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
         </section>
     </main>
@@ -93,21 +110,11 @@
             <div class="footer-columna">
                 <h3 class="footer-titulo">Redes Sociales</h3>
                 <div class="redes-sociales">
-                    <a href="#" aria-label="Instagram" class="social-link">
-                        <img src="img/instagram-icon.png" alt="Instagram" class="social-icon-img" onerror="this.style.display='none'">
-                    </a>
-                    <a href="#" aria-label="X (Twitter)" class="social-link">
-                        <img src="img/x-icon.png" alt="X (Twitter)" class="social-icon-img" onerror="this.style.display='none'">
-                    </a>
-                    <a href="#" aria-label="Facebook" class="social-link">
-                        <img src="img/facebook-icon.png" alt="Facebook" class="social-icon-img" onerror="this.style.display='none'">
-                    </a>
-                    <a href="#" aria-label="LinkedIn" class="social-link">
-                        <img src="img/linkedin-icon.png" alt="LinkedIn" class="social-icon-img" onerror="this.style.display='none'">
-                    </a>
-                    <a href="#" aria-label="TikTok" class="social-link">
-                        <img src="img/tiktok-icon.png" alt="TikTok" class="social-icon-img" onerror="this.style.display='none'">
-                    </a>
+                    <a href="#" aria-label="Instagram" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="X (Twitter)" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" aria-label="Facebook" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="LinkedIn" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" aria-label="TikTok" class="social-link"><i class="fa-brands fa-tiktok"></i></a>
                 </div>
             </div>
         </div>
