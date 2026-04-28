@@ -64,7 +64,7 @@ body {
     border-radius: 2px;
 }
 .cabecera-navegacion {
-    background-color: #000000; 
+    background-color: #00796B; 
     padding: 10px 0;
 }
 .enlaces-nav {
@@ -115,28 +115,139 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-#controles-filtro {
+#leyenda-mapa {
     position: absolute;
-    bottom: 15px;
-    right: 15px;
-    z-index: 10;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 8px;
-    border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: white;
+    padding: 5px;
+    border-radius: 22px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    max-width: 500px;
+    height: 44px;
 }
-.filtro-btn {
-    padding: 8px 12px;
-    margin: 0 4px;
+
+.leyenda-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    border: 1px solid #00796B;
-    background-color: white;
-    color: #00796B;
-    border-radius: 4px;
-    transition: background-color 0.2s;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    transition: background 0.3s;
+    flex-shrink: 0;
 }
-.filtro-btn:hover {
-    background-color: #f0f0f0;
+
+.leyenda-header:hover {
+    background: #f0f0f0;
+}
+
+#leyenda-mapa h3 {
+    display: none; /* Only icons as requested */
+}
+
+#leyenda-contenido {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    margin-left: 5px;
+    transition: all 0.4s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+#leyenda-mapa.colapsado {
+    max-width: 44px;
+    padding: 5px;
+}
+
+#leyenda-mapa.colapsado #leyenda-contenido {
+    max-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    margin-left: 0;
+}
+
+#leyenda-toggle-icon {
+    transition: transform 0.4s ease;
+    color: #00796B;
+    font-size: 18px;
+    transform: rotate(90deg); /* Points Left when expanded */
+}
+
+#leyenda-mapa.colapsado #leyenda-toggle-icon {
+    transform: rotate(-90deg); /* Points Right when collapsed */
+}
+
+.leyenda-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 50%;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.leyenda-item:hover {
+    background: #e8f5e9;
+    transform: scale(1.1);
+}
+
+.leyenda-item i {
+    font-size: 18px;
+}
+
+.custom-div-icon {
+    background: transparent;
+    border: none;
+}
+
+/* Notificación de Filtros */
+#filtro-notificacion {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 121, 107, 0.9);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    z-index: 9999;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#filtro-notificacion.oculto {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#filtro-notificacion.visible {
+    opacity: 1;
+    visibility: visible;
+    animation: fadeInOut 1.5s forwards;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -40%); }
+    20% { opacity: 1; transform: translate(-50%, -50%); }
+    80% { opacity: 1; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -60%); }
 }
 
 .Información {
@@ -697,6 +808,7 @@ body {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
 }
 
 @media (max-width: 992px) {
@@ -739,7 +851,7 @@ body {
 
 /* Cabecera */
 .cabecera-contenedor {
-    background: var(--blanco);
+    background: white;
     box-shadow: var(--sombra);
     position: sticky;
     top: 0;
@@ -763,7 +875,7 @@ body {
 }
 
 .cabecera-navegacion {
-    background: var(--verde-principal);
+    background: #00796B;
     padding: 10px 0;
 }
 
@@ -913,8 +1025,8 @@ html {
 
 .enlaces-nav a.activo {
     font-weight: bold;
-    color: #ff4500; 
-    border-bottom: 2px solid #ff4500;
+    color: white; 
+    border-bottom: 2px solid white;
 }
 
 .tarjeta-estanco {
@@ -971,7 +1083,7 @@ button,
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    border: 3px solid #ff4500;
+    border: 3px solid #00796B;
     object-fit: cover;
 }
 
@@ -979,7 +1091,7 @@ button,
     position: absolute;
     bottom: 5px;
     right: 5px;
-    background: #ff4500;
+    background: #00796B;
     color: white;
     padding: 8px;
     border-radius: 50%;
@@ -1012,7 +1124,7 @@ button,
 }
 
 .btn-guardar {
-    background: #ff4500;
+    background: #00796B;
     color: white;
     border: none;
     padding: 12px 25px;
@@ -1025,11 +1137,92 @@ button,
 
 .btn-logout {
     background: transparent;
-    color: #ff4500;
-    border: 1px solid #ff4500;
+    color: #00796B;
+    border: 1px solid #00796B;
     padding: 10px;
     border-radius: 25px;
     cursor: pointer;
     width: 100%;
     margin-top: 10px;
+}
+/* Modales y Formularios de Foro */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-contenido {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.cerrar-modal {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+}
+
+.rating-input {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.rating-input input {
+    display: none;
+}
+
+.rating-input label {
+    font-size: 30px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.rating-input label:hover,
+.rating-input label:hover ~ label,
+.rating-input input:checked ~ label {
+    color: gold;
+}
+
+.foro-formulario .campo {
+    margin-bottom: 20px;
+}
+
+.foro-formulario label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.foro-formulario input[type="text"],
+.foro-formulario textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.foro-formulario input[type="file"] {
+    margin-top: 5px;
 }

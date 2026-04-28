@@ -7,14 +7,13 @@
     <link rel="icon" type="image/png" href="img/smokecan-logo.png">
     
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 </head>
 <body>
     <div class="cabecera-contenedor">
         <div class="cabecera-principal">
-            <div>
-                <a href="logout.php"><h3>SALIR</h3></a>
-            </div>
+            <div></div>
             <div class="logo">
                 <a href="index.html"><img src="img/smokecan-logo.png" alt="Logo SMOKECAN"></a>
             </div>
@@ -30,19 +29,46 @@
             <div class="enlaces-nav">
                 <div class="enlace-item"><a href="#informacion">Información</a></div>
                 <div class="enlace-item"><a href="#novedades">Novedades</a></div>
-                <div class="enlace-item"><a href="foro.html">Foro Smokecan</a></div>
+                <div class="enlace-item"><a href="foro.php">Foro Smokecan</a></div>
                 <div class="enlace-item"><a href="estancos.html">Estancos</a></div>
             </div>
         </div>
     </div>
     
+    <div id="filtro-notificacion" class="oculto"></div>
     <div class="mapa-caja">
-        <input id="input-buscador" type="text" placeholder="Buscar calles en Molins de Rei..." autocomplete="off">
-        <div id="controles-filtro">
-            <button class="filtro-btn" onclick="filtrarMarcadores('todos')">Todo</button>
-            <button class="filtro-btn" onclick="filtrarMarcadores('parque')">Parques</button>
-            <button class="filtro-btn" onclick="filtrarMarcadores('terraza')">Terrazas</button>
-            <button class="filtro-btn" onclick="filtrarMarcadores('edificio')">Edificios</button>
+        <div class="buscador-mapa-contenedor">
+            <input id="input-buscador" type="text" placeholder="Buscar calles en Molins de Rei..." autocomplete="off">
+            <button id="btn-buscar-mapa" class="btn-buscar-estilo"><i class="fa fa-search"></i></button>
+        </div>
+        <div id="leyenda-mapa" class="colapsado">
+            <div class="leyenda-header" onclick="toggleLeyenda()">
+                <h3>Filtros y Leyenda</h3>
+                <i class="fa-solid fa-chevron-down" id="leyenda-toggle-icon"></i>
+            </div>
+            <div id="leyenda-contenido">
+                <div class="leyenda-item" onclick="filtrarMarcadores('todos')" title="Todo">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div class="leyenda-item" onclick="filtrarMarcadores('prohibido')" title="Zonas Prohibidas">
+                    <i class="fa-solid fa-ban" style="color: #00796B;"></i>
+                </div>
+                <div class="leyenda-item" onclick="filtrarMarcadores('terraza')" title="No recomendado">
+                    <i class="fa-solid fa-chair" style="color: #4db6ac;"></i>
+                </div>
+                <div class="leyenda-item" onclick="filtrarMarcadores('estanco')" title="Estancos">
+                    <i class="fa-solid fa-smoking" style="color: #00796B;"></i>
+                </div>
+                <div class="leyenda-item" onclick="filtrarMarcadores('hospital')" title="Hospitales">
+                    <i class="fa-solid fa-hospital" style="color: #00796B;"></i>
+                </div>
+                <div class="leyenda-item" onclick="filtrarMarcadores('colegio')" title="Colegios">
+                    <i class="fa-solid fa-school" style="color: #00796B;"></i>
+                </div>
+                <div class="leyenda-item" onclick="filtrarMarcadores('bus')" title="Paradas Bus">
+                    <i class="fa-solid fa-bus" style="color: #00796B;"></i>
+                </div>
+            </div>
         </div>
         <div id="mapa-contenedor"></div>
     </div>
@@ -94,21 +120,11 @@
         <div class="footer-columna">
             <h3 class="footer-titulo">Redes Sociales</h3>
             <div class="redes-sociales">
-                <a href="#" aria-label="Instagram" class="social-link">
-                    <img src="img/instagram-icon.png" alt="Instagram" class="social-icon-img">
-                </a>
-                <a href="#" aria-label="X (Twitter)" class="social-link">
-                    <img src="img/x-icon.png" alt="X (Twitter)" class="social-icon-img">
-                </a>
-                <a href="#" aria-label="Facebook" class="social-link">
-                    <img src="img/facebook-icon.png" alt="Facebook" class="social-icon-img">
-                </a>
-                <a href="#" aria-label="LinkedIn" class="social-link">
-                    <img src="img/linkedin-icon.png" alt="LinkedIn" class="social-icon-img">
-                </a>
-                <a href="#" aria-label="TikTok" class="social-link">
-                    <img src="img/tiktok-icon.png" alt="TikTok" class="social-icon-img">
-                </a>
+                <a href="#" aria-label="Instagram" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" aria-label="X (Twitter)" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" aria-label="Facebook" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" aria-label="LinkedIn" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="#" aria-label="TikTok" class="social-link"><i class="fa-brands fa-tiktok"></i></a>
             </div>
         </div>
         
