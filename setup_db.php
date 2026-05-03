@@ -12,9 +12,24 @@ $sql = "CREATE TABLE IF NOT EXISTS comentarios (
 )";
 
 if ($conn->query($sql) === TRUE) {
-    echo "Tabla 'comentarios' creada o ya existe.";
+    echo "Tabla 'comentarios' creada o ya existe.\n";
 } else {
-    echo "Error creando tabla: " . $conn->error;
+    echo "Error creando tabla: " . $conn->error . "\n";
+}
+
+$sql_usuario = "CREATE TABLE IF NOT EXISTS usuario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)";
+
+if ($conn->query($sql_usuario) === TRUE) {
+    echo "Tabla 'usuario' creada o ya existe.\n";
+} else {
+    echo "Error creando tabla usuario: " . $conn->error . "\n";
 }
 
 $conn->close();

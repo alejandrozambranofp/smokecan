@@ -8,15 +8,15 @@ const centroMolins = [41.4137, 2.0158];
 // Base de datos de Puntos y Zonas
 const baseDeDatos = {
     zonas: [
-        { nombre: "Parc de la Mariona", lat: 41.4072, lng: 2.0225, radio: 110, tipo: "parque", nivel: "prohibido" },
-        { nombre: "Parc del Pont de la Cadena", lat: 41.4083, lng: 2.0163, radio: 85, tipo: "parque", nivel: "prohibido" },
-        { nombre: "CAP Molins de Rei (Hospital)", lat: 41.4111, lng: 2.0108, radio: 65, tipo: "hospital", nivel: "prohibido" },
-        { nombre: "Ajuntament de Molins", lat: 41.4144, lng: 2.0163, radio: 50, tipo: "edificio", nivel: "prohibido" },
-        { nombre: "Escola Josep Maria Madorell", lat: 41.4161, lng: 2.0135, radio: 75, tipo: "colegio", nivel: "prohibido" },
+        { nombre: "Parc de la Mariona", lat: 41.4056, lng: 2.0220, radio: 110, tipo: "parque", nivel: "prohibido" },
+        { nombre: "Parc del Pont de la Cadena", lat: 41.4128, lng: 2.0145, radio: 85, tipo: "parque", nivel: "prohibido" },
+        { nombre: "CAP Molins de Rei (Hospital)", lat: 41.4145, lng: 2.0223, radio: 65, tipo: "hospital", nivel: "prohibido" },
+        { nombre: "Ajuntament de Molins", lat: 41.4139, lng: 2.0158, radio: 50, tipo: "edificio", nivel: "prohibido" },
+        { nombre: "Escola Josep Maria Madorell", lat: 41.4129, lng: 2.0187, radio: 75, tipo: "colegio", nivel: "prohibido" },
         { nombre: "Passeig de Pi i Margall", lat: 41.4136, lng: 2.0164, radio: 90, tipo: "terraza", nivel: "no-recomendado" },
         { nombre: "Terraza El Racó", lat: 41.4148, lng: 2.0170, radio: 30, tipo: "terraza", nivel: "no-recomendado" },
-        { nombre: "Biblioteca El Molí", lat: 41.4051, lng: 2.0203, radio: 55, tipo: "edificio", nivel: "prohibido" },
-        { nombre: "Zona Deportiva Municipal", lat: 41.4165, lng: 2.0110, radio: 110, tipo: "parque", nivel: "prohibido" }
+        { nombre: "Biblioteca El Molí", lat: 41.4128, lng: 2.0146, radio: 55, tipo: "edificio", nivel: "prohibido" },
+        { nombre: "Zona Deportiva Municipal", lat: 41.4155, lng: 2.0177, radio: 110, tipo: "parque", nivel: "prohibido" }
     ],
     puntos: [
         { nombre: "Estanco Passeig de Pi i Margall", lat: 41.4136, lng: 2.0164, tipo: "estanco" },
@@ -39,7 +39,7 @@ const iconos = {
 };
 
 function iniciarMapa() {
-    mapaPrincipal = L.map('mapa-contenedor').setView(centroMolins, 15);
+    mapaPrincipal = L.map('mapa-contenedor', { zoomControl: false }).setView(centroMolins, 15);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -49,7 +49,7 @@ function iniciarMapa() {
     setTimeout(() => { mapaPrincipal.invalidateSize(); }, 200);
 
     dibujarMapa('todos');
-    configurarBuscadorPrincipal();
+    // configurarBuscadorPrincipal();
 }
 
 function dibujarMapa(filtro) {

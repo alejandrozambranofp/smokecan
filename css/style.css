@@ -1,6 +1,14 @@
-body {
+html, body {
     margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
     font-family: sans-serif;
+}
+.pagina-mapa {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 .cabecera-contenedor {
     width: 100%;
@@ -10,7 +18,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 15px;
+    padding: 0 15px;
     height: 60px; 
 }
 .icono {
@@ -65,13 +73,14 @@ body {
 }
 .cabecera-navegacion {
     background-color: #00796B; 
-    padding: 10px 0;
+    padding: 5px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
 }
 .enlaces-nav {
     display: flex;
-    justify-content: space-around; 
+    justify-content: center; 
     padding: 0 15px;
-    gap: 10px;
+    gap: 20px;
 }
 .enlace-item {
     display: inline-block; 
@@ -95,30 +104,43 @@ body {
 .mapa-caja {
     position: relative; 
     width: 100%;
+    flex: 1; /* Ocupa todo el espacio restante */
+    display: flex;
+    flex-direction: column;
 }
 #mapa-contenedor {
-    height: 500px;
+    flex: 1; /* El mapa llena su contenedor padre */
     width: 100%;
     z-index: 1; 
 }
+
+/* Ajuste Responsive para el Mapa */
+@media (max-width: 600px) {
+    .cabecera-principal {
+        height: 50px;
+    }
+    .logo img {
+        height: 40px;
+    }
+}
 #input-buscador {
     position: absolute;
-    top: 80px; 
+    top: 20px; /* Movido arriba para estar sobre el mapa */
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
-    padding: 10px;
+    padding: 12px 20px;
     font-size: 16px;
     width: 90%;
     max-width: 450px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border: none;
+    border-radius: 25px; /* Más moderno y redondeado */
 }
 #leyenda-mapa {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    top: 20px;
+    right: 20px;
     z-index: 1000;
     background: white;
     padding: 5px;
@@ -1225,4 +1247,196 @@ button,
 
 .foro-formulario input[type="file"] {
     margin-top: 5px;
+}
+
+/* =========================================
+   ESTILOS PRINCIPALES DEL FORO
+   ========================================= */
+
+.foro-main {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 5%;
+    min-height: 70vh;
+}
+
+.foro-titulo {
+    font-size: 2.2em;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Controles superiores */
+.foro-controles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 40px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.foro-buscar-caja {
+    display: flex;
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+}
+
+.foro-buscar-input {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 25px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.foro-buscar-input:focus {
+    border-color: #00796B;
+}
+
+.foro-buscar-btn {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    bottom: 5px;
+    background: #00796B;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.foro-buscar-btn:hover {
+    background: #005f54;
+}
+
+.foro-filtro-btn,
+.foro-publicar-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.foro-filtro-btn {
+    background: #f5f5f5;
+    color: #555;
+    border: 1px solid #ddd;
+}
+
+.foro-filtro-btn:hover {
+    background: #e0e0e0;
+}
+
+.foro-publicar-btn {
+    background: #00796B;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 121, 107, 0.3);
+}
+
+.foro-publicar-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 121, 107, 0.4);
+}
+
+/* Grid Principal */
+.foro-contenido-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+}
+
+@media (max-width: 800px) {
+    .foro-contenido-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Columna de Comentarios */
+.foro-comentarios-columna {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tarjeta-comentario {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-left: 5px solid #00796B;
+    transition: transform 0.2s;
+}
+
+.tarjeta-comentario:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.comentario-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.comentario-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f0f0f0;
+    padding: 5px;
+}
+
+.comentario-info {
+    flex: 1;
+}
+
+.comentario-nombre {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 1.1em;
+    margin: 0 0 5px 0;
+}
+
+.comentario-zona {
+    color: #00796B;
+    font-weight: 600;
+    font-size: 0.9em;
+    margin: 0;
+}
+
+.comentario-texto {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.comentario-estrellas {
+    margin-bottom: 10px;
+}
+
+/* Columna Populares (Aside) */
+.foro-populares-columna {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 15px;
+    height: fit-content;
+}
+
+.populares-titulo {
+    font-size: 1.5em;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
 }

@@ -16,15 +16,17 @@ if (isset($_SESSION['usuario_id'])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // 1. Limpiamos los datos de entrada
-    $nombre = $conn->real_escape_string($_POST['nombre']);
-    $apellidos = $conn->real_escape_string($_POST['apellidos']);
-    $email = $conn->real_escape_string($_POST['email']);
+    // 1. Recogemos los datos de entrada
+    $nombre = trim($_POST['nombre']);
+    $apellidos = trim($_POST['apellidos']);
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
 
     // 2. Comprobamos si el email ya existe
-    $check_email = "SELECT id FROM usuario WHERE email = '$email'";
-    $resultado = $conn->query($check_email);
+    $stmt_check = $conn->prepare("SELECT id FROM usuario WHERE email = ?");
+    $stmt_check->bind_param("s", $email);
+    $stmt_check->execute();
+    $resultado = $stmt_check->get_result();
 
     if ($resultado->num_rows > 0) {
         $error = "Este correo electrónico ya está registrado.";
@@ -33,10 +35,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
         // 4. Insertamos en la base de datos (usamos NOW() para la fecha actual)
-        $sql = "INSERT INTO usuario (nombre, apellidos, email, password, fecha_registro) 
-                VALUES ('$nombre', '$apellidos', '$email', '$password_hash', NOW())";
+        $stmt_insert = $conn->prepare("INSERT INTO usuario (nombre, apellidos, email, password, fecha_registro) VALUES (?, ?, ?, ?, NOW())");
+        $stmt_insert->bind_param("ssss", $nombre, $apellidos, $email, $password_hash);
 
-        if ($conn->query($sql) === TRUE) {
+        if ($stmt_insert->execute()) {
             // Éxito: Redirigimos al login con un parámetro para mostrar mensaje
             // Opcional: Podrías loguearlo automáticamente aquí si quisieras
             header("Location: login.php?registrado=1");

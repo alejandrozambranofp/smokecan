@@ -35,8 +35,7 @@ $resultado = $conn->query($sql);
         </div>
         <nav class="cabecera-navegacion">
             <div class="enlaces-nav">
-                <div class="enlace-item"><a href="index.html#informacion">Información</a></div>
-                <div class="enlace-item"><a href="index.html#novedades">Novedades</a></div>
+                <div class="enlace-item"><a href="index.html">Mapa</a></div>
                 <div class="enlace-item"><a href="foro.php" class="activo">Foro Smokecan</a></div>
                 <div class="enlace-item"><a href="estancos.html">Estancos</a></div>
             </div>

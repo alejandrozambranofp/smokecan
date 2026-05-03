@@ -14,11 +14,11 @@ const datosEstancos = [
 
 // Base de datos de Zonas Libres de Humo (Las mismas del mapa principal)
 const zonasLibresDeHumo = [
-    { nombre: "Parc de la Mariona", lat: 41.4072, lng: 2.0225, radio: 110 },
-    { nombre: "Parc del Pont de la Cadena", lat: 41.4083, lng: 2.0163, radio: 85 },
-    { nombre: "CAP Molins de Rei", lat: 41.4111, lng: 2.0108, radio: 65 },
-    { nombre: "Ajuntament de Molins", lat: 41.4144, lng: 2.0163, radio: 50 },
-    { nombre: "Escola Josep Maria Madorell", lat: 41.4161, lng: 2.0135, radio: 75 },
+    { nombre: "Parc de la Mariona", lat: 41.4056, lng: 2.0220, radio: 110 },
+    { nombre: "Parc del Pont de la Cadena", lat: 41.4128, lng: 2.0145, radio: 85 },
+    { nombre: "CAP Molins de Rei", lat: 41.4145, lng: 2.0223, radio: 65 },
+    { nombre: "Ajuntament de Molins", lat: 41.4139, lng: 2.0158, radio: 50 },
+    { nombre: "Escola Josep Maria Madorell", lat: 41.4129, lng: 2.0187, radio: 75 },
     { nombre: "Passeig de Pi i Margall", lat: 41.4136, lng: 2.0164, radio: 90 },
     { nombre: "Terraza El Racó", lat: 41.4148, lng: 2.0170, radio: 30 }
 ];

@@ -14,8 +14,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $conn->real_escape_string($_POST['email']);
     $password_ingresada = $_POST['password'];
 
-    $sql = "SELECT id, nombre, apellidos, password FROM usuario WHERE email = '$email'";
-    $resultado = $conn->query($sql);
+    $stmt = $conn->prepare("SELECT id, nombre, apellidos, password FROM usuario WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
 
     if ($resultado->num_rows > 0) {
         $fila = $resultado->fetch_assoc();

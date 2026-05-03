@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 </head>
-<body>
+<body class="pagina-mapa">
     <div class="cabecera-contenedor">
         <div class="cabecera-principal">
             <div></div>
@@ -27,8 +27,7 @@
         </div>
         <div class="cabecera-navegacion">
             <div class="enlaces-nav">
-                <div class="enlace-item"><a href="#informacion">Información</a></div>
-                <div class="enlace-item"><a href="#novedades">Novedades</a></div>
+                <div class="enlace-item"><a href="index.html" class="activo">Mapa</a></div>
                 <div class="enlace-item"><a href="foro.php">Foro Smokecan</a></div>
                 <div class="enlace-item"><a href="estancos.html">Estancos</a></div>
             </div>
@@ -37,10 +36,6 @@
     
     <div id="filtro-notificacion" class="oculto"></div>
     <div class="mapa-caja">
-        <div class="buscador-mapa-contenedor">
-            <input id="input-buscador" type="text" placeholder="Buscar calles en Molins de Rei..." autocomplete="off">
-            <button id="btn-buscar-mapa" class="btn-buscar-estilo"><i class="fa fa-search"></i></button>
-        </div>
         <div id="leyenda-mapa" class="colapsado">
             <div class="leyenda-header" onclick="toggleLeyenda()">
                 <h3>Filtros y Leyenda</h3>
@@ -73,65 +68,8 @@
         <div id="mapa-contenedor"></div>
     </div>
     
-    <section id="informacion" class="Información">
-        <div class="info-contenido">
-            <h2 class="info-titulo">¿NUEVA LEY DE ZONAS LIBRES DE HUMO?</h2>
-            <p class="info-parrafo">¡SÍ, y las reglas han cambiado! La nueva ley antitabaco amplía las restricciones, y el desconocimiento trae consigo el riesgo de multas severas.</p>
-            <p class="info-parrafo">Ahora es crucial saber que terrazas de bares, exteriores de hospitales y vapers desechables están en el punto de mira.</p>
-            <p class="info-parrafo">No te arriesgues a una sanción. Usa Smokecan para verificar de inmediato si estás en una zona libre de humo. ¡Infórmate al instante y viaja seguro!</p>
-        </div>
-    </section>
-
-    <section id="novedades" class="comunidad-smokecan">
-        <h2 class="comunidad-titulo">👍 Comunidad Smokecan:</h2>
-        <h1 class="comunidad-subtitulo">¡La información es Poder!</h1>
-        
-        <div class="comunidad-cards-contenedor">
-            <div class="card">
-                <img src="img/card1_fiabilidad.png" alt="Persona usando el móvil" class="card-imagen">
-                <div class="card-cuerpo">
-                    <p class="card-texto-destacado">Valora la fiabilidad de cada zona marcada.</p>
-                    <p class="card-texto-secundario">Tu experiencia evita sanciones a otros.</p>
-                </div>
-            </div>
-            
-            <div class="card">
-                <img src="img/card2_compartir.png" alt="Apretón de manos sobre un mapa" class="card-imagen">
-                <div class="card-cuerpo">
-                    <p class="card-texto-destacado">¿Ves un cartel nuevo? ¡Compártelo!</p>
-                    <p class="card-texto-secundario">SmokeCan es más que un mapa. Es una comunidad</p>
-                </div>
-            </div>
-            
-            <div class="card">
-                <img src="img/card3_ayuda.png" alt="Icono de flechas circulares" class="card-imagen-icono">
-                <div class="card-cuerpo">
-                    <p class="card-texto-destacado">Juntos, construimos un mapa más preciso.</p>
-                    <p class="card-texto-secundario">Ayúdanos a respirar tranquilos</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="js/mapa.js"></script> 
-    
-    <footer class="footer-contenedor">
-        <div class="footer-columna">
-            <h3 class="footer-titulo">Redes Sociales</h3>
-            <div class="redes-sociales">
-                <a href="#" aria-label="Instagram" class="social-link"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" aria-label="X (Twitter)" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="#" aria-label="Facebook" class="social-link"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#" aria-label="LinkedIn" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="#" aria-label="TikTok" class="social-link"><i class="fa-brands fa-tiktok"></i></a>
-            </div>
-        </div>
-        
-        <div class="footer-copyright">
-            <p><strong>Smokecan</strong> ©2025 Smokecan | Todos los derechos reservados</p>
-        </div>
-    </footer>
     <script src="js/auth.js"></script>
 </body>
 </html>

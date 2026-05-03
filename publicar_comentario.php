@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sitio = $_POST['sitio'];
     $valoracion = $_POST['valoracion'];
     $comentario = $_POST['comentario'];
-    $usuario_nombre = isset($_SESSION['usuario_nombre']) ? $_SESSION['usuario_nombre'] : 'Invitado';
+    $usuario_nombre = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : 'Invitado';
     
     // Manejo de la foto
     $foto_ruta = null;
