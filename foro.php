@@ -2,8 +2,8 @@
 require_once 'conexion.php';
 session_start();
 
-// Obtener comentarios de la DB
-$sql = "SELECT * FROM comentarios ORDER BY fecha DESC";
+// Obtener solo comentarios aprobados de la DB
+$sql = "SELECT * FROM comentarios WHERE estado = 'aprobado' ORDER BY fecha DESC";
 $resultado = $conn->query($sql);
 ?>
 <!DOCTYPE html>
@@ -45,13 +45,8 @@ $resultado = $conn->query($sql);
     <main class="foro-main">
         <h1 class="foro-titulo">Foro SmokeCan: Opiniones por zonas</h1>
 
-        <section class="foro-controles">
-            <div class="foro-buscar-caja">
-                <input type="text" placeholder="Buscar zona o establecimiento en Molins..." class="foro-buscar-input">
-                <button class="foro-buscar-btn" aria-label="Buscar"><i class="fa fa-search"></i></button>
-            </div>
-            <button class="foro-filtro-btn">Filtrar</button>
-            <button class="foro-publicar-btn" id="btn-abrir-modal">Publicar nuevo comentario</button>
+        <section class="foro-controles" style="justify-content: center;">
+            <button class="foro-publicar-btn" id="btn-abrir-modal" style="width: 100%; max-width: 400px;">Publicar nuevo comentario</button>
         </section>
 
         <!-- Modal de Publicación -->
@@ -124,53 +119,22 @@ $resultado = $conn->query($sql);
                                     ?>
                                 </span>
                             </div>
-                            <small style="color: #999;"><?php echo date('d/m/Y H:i', strtotime($row['fecha'])); ?></small>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <small style="color: #999;"><?php echo date('d/m/Y H:i', strtotime($row['fecha'])); ?></small>
+                                <?php if (isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] == $row['usuario_id']): ?>
+                                <div class="comentario-acciones-autor">
+                                    <button onclick="eliminarComentario(<?php echo $row['id']; ?>)" class="btn-borrar-coment" title="Eliminar"><i class="fa fa-trash"></i></button>
+                                </div>
+                                <?php endif; ?>
+                            </div>
                         </article>
                     <?php endwhile; ?>
                 <?php endif; ?>
-
-                <!-- Comentarios estáticos de ejemplo (puedes quitarlos si quieres) -->
-                <article class="tarjeta-comentario">
-                    <div class="comentario-header">
-                        <img src="img/icono-usuario.png" alt="Usuario" class="comentario-avatar">
-                        <div class="comentario-info">
-                            <p class="comentario-nombre">ALEJANDROZT #2704</p>
-                            <p class="comentario-zona">Terraza El Racó (Molins):</p>
-                        </div>
-                    </div>
-                    <p class="comentario-texto">Limpia. 100% libre de humo. El personal se asegura de que se cumpla la normativa desde el primer minuto.</p>
-                    <div class="comentario-estrellas">
-                        <span class="star-rating" style="color: gold;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                    </div>
-                </article>
+            </section>
 
             </section>
 
-            <aside class="foro-populares-columna">
-                <h2 class="populares-titulo">Sitios Populares 🔥</h2>
-                
-                <div class="tarjeta-popular">
-                    <img src="https://images.unsplash.com/photo-1525610553991-2bede1a236e2?auto=format&fit=crop&w=300&q=80" alt="Passeig de Pi i Margall" class="popular-imagen">
-                    <div class="popular-info">
-                        <p class="popular-nombre">Passeig de Pi i Margall</p>
-                        <div class="popular-estrellas">
-                            <span class="star-rating" style="color: gold;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                        </div>
-                    </div>
-                    <button class="popular-btn">ver</button>
-                </div>
-
-                <div class="tarjeta-popular">
-                    <img src="https://images.unsplash.com/photo-1604928141064-207cea6f5722?auto=format&fit=crop&w=300&q=80" alt="Parc de la Mariona" class="popular-imagen">
-                    <div class="popular-info">
-                        <p class="popular-nombre">Parc de la Mariona</p>
-                        <div class="popular-estrellas">
-                            <span class="star-rating" style="color: gold;">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
-                        </div>
-                    </div>
-                    <button class="popular-btn">ver</button>
-                </div>
-            </aside>
+            <!-- Sección de populares eliminada -->
         </div>
     </main>
 
@@ -226,39 +190,27 @@ $resultado = $conn->query($sql);
             if (event.target == modal) modal.style.display = "none";
         }
 
-        // Lógica de Búsqueda en el Foro
-        const buscarInput = document.querySelector('.foro-buscar-input');
-        const buscarBtn = document.querySelector('.foro-buscar-btn');
-        const filtroBtn = document.querySelector('.foro-filtro-btn');
-        const comentarios = document.querySelectorAll('.tarjeta-comentario');
+        // Lógica de Publicar Comentario ya integrada arriba en el script del modal
 
-        const filtrarComentarios = () => {
-            const term = buscarInput.value.toLowerCase().trim();
-            comentarios.forEach(c => {
-                const texto = c.innerText.toLowerCase();
-                c.style.display = texto.includes(term) ? "block" : "none";
-            });
-        };
-
-        if (buscarBtn) buscarBtn.onclick = filtrarComentarios;
-        if (buscarInput) {
-            buscarInput.onkeypress = (e) => { if(e.key === 'Enter') filtrarComentarios(); }
-        }
-        if (filtroBtn) {
-            filtroBtn.onclick = () => {
-                buscarInput.value = "";
-                comentarios.forEach(c => c.style.display = "block");
-            };
-        }
-
-        // Lógica para botones "ver" de populares
-        document.querySelectorAll('.popular-btn').forEach(btn => {
-            btn.onclick = function() {
-                const nombre = this.parentElement.querySelector('.popular-nombre').innerText;
-                buscarInput.value = nombre;
-                filtrarComentarios();
+        function eliminarComentario(id) {
+            if(confirm("¿Seguro que quieres borrar tu comentario?")) {
+                fetch('comentarios_acciones.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `accion=borrar&id=${id}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.success) {
+                        location.reload();
+                    } else {
+                        alert("Error: " + data.message);
+                    }
+                });
             }
-        });
+        }
+
+
     </script>
 </body>
 </html>

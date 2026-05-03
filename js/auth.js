@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     const estaLogueado = obtenerCookie('usuario_logeado');
+    const rol = obtenerCookie('usuario_rol');
 
     // 3. Lógica para el área de usuario (perfil / iniciar sesión)
     if (contenedorUsuario) {
@@ -20,6 +21,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 enlaceUsuario.href = 'perfil.php';
                 // Añadimos un borde verde para indicar sesión activa
                 enlaceUsuario.parentElement.style.border = "2px solid #00796B";
+                
+                // Si es admin, añadir el enlace al panel en la navegación
+                if (rol === 'admin') {
+                    const navLinks = document.querySelector('.enlaces-nav');
+                    if (navLinks && !document.getElementById('nav-admin-link')) {
+                        const adminLink = document.createElement('div');
+                        adminLink.className = 'enlace-item';
+                        adminLink.id = 'nav-admin-link';
+                        adminLink.innerHTML = '<a href="admin.php">Panel Admin</a>';
+                        navLinks.appendChild(adminLink);
+                    }
+                }
             }
         } else {
             // Si no está logueado, reemplazamos el círculo por un botón de "Iniciar sesión"

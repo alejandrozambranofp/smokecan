@@ -7,8 +7,11 @@ $sql = "CREATE TABLE IF NOT EXISTS comentarios (
     valoracion INT NOT NULL,
     comentario TEXT,
     foto VARCHAR(255),
+    usuario_id INT,
     usuario_nombre VARCHAR(100),
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    estado ENUM('pendiente', 'aprobado') DEFAULT 'pendiente',
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 )";
 
 if ($conn->query($sql) === TRUE) {
@@ -23,6 +26,7 @@ $sql_usuario = "CREATE TABLE IF NOT EXISTS usuario (
     apellidos VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    rol ENUM('user', 'admin') DEFAULT 'user',
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )";
 

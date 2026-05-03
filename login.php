@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $conn->real_escape_string($_POST['email']);
     $password_ingresada = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT id, nombre, apellidos, password FROM usuario WHERE email = ?");
+    $stmt = $conn->prepare("SELECT id, nombre, apellidos, password, rol FROM usuario WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -24,12 +24,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($password_ingresada, $fila['password'])) {
             // Guardamos datos en la sesión (Servidor)
             $_SESSION['usuario_id'] = $fila['id'];
-            $_SESSION['nombre'] = $fila['nombre'];
-            $_SESSION['apellido'] = $fila['apellidos'];
+            $_SESSION['usuario_nombre'] = $fila['nombre']; // Usar nombre consistente para el admin
+            $_SESSION['rol'] = $fila['rol'];
             $_SESSION['email'] = $email;
 
             // Creamos la cookie para que el JavaScript (Cliente) sepa que estamos dentro
             setcookie("usuario_logeado", "1", time() + (86400 * 30), "/");
+            setcookie("usuario_rol", $fila['rol'], time() + (86400 * 30), "/");
 
             header("Location: index.html");
             exit();
