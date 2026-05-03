@@ -1,6 +1,7 @@
 let mapaPrincipal;
 let circulosZonas = [];
 let marcadoresPuntos = [];
+let marcadorUsuario;
 
 // Coordenadas centrales de Molins de Rei
 const centroMolins = [41.4137, 2.0158];
@@ -174,6 +175,51 @@ function toggleLeyenda() {
     if (leyenda) {
         leyenda.classList.toggle('colapsado');
     }
+}
+
+function localizarUsuario() {
+    if (!navigator.geolocation) {
+        alert("Tu navegador no soporta geolocalización.");
+        return;
+    }
+
+    mostrarNotificacion("Buscando tu ubicación...");
+
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+
+            // Si ya existe el marcador, lo movemos
+            if (marcadorUsuario) {
+                marcadorUsuario.setLatLng([lat, lng]);
+            } else {
+                // Crear un icono azul especial para el usuario
+                const iconoUsuario = L.divIcon({
+                    html: `
+                        <div class="user-location-marker">
+                            <div class="user-dot"></div>
+                            <div class="user-pulse"></div>
+                        </div>
+                    `,
+                    className: 'custom-user-icon',
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                });
+
+                marcadorUsuario = L.marker([lat, lng], { icon: iconoUsuario }).addTo(mapaPrincipal);
+                marcadorUsuario.bindPopup("<b>Estás aquí</b><br>Consulta las zonas libres de humo a tu alrededor.");
+            }
+
+            mapaPrincipal.flyTo([lat, lng], 17, { animate: true, duration: 1.5 });
+            marcadorUsuario.openPopup();
+        },
+        (err) => {
+            console.error("Error de geolocalización:", err);
+            alert("No se pudo obtener tu ubicación. Asegúrate de dar permisos.");
+        },
+        { enableHighAccuracy: true }
+    );
 }
 
 document.addEventListener('DOMContentLoaded', iniciarMapa);

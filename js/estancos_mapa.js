@@ -1,6 +1,7 @@
 let mapaEstancos;
 let marcadoresEstancos = [];
 let circulosZonasEstancos = [];
+let marcadorUsuarioEstancos;
 
 // Coordenadas centrales de Molins de Rei
 const centroMolins = [41.4137, 2.0158];
@@ -147,6 +148,49 @@ function toggleLeyenda() {
     if (leyenda) {
         leyenda.classList.toggle('colapsado');
     }
+}
+
+function localizarUsuarioEstancos() {
+    if (!navigator.geolocation) {
+        alert("Tu navegador no soporta geolocalización.");
+        return;
+    }
+
+    mostrarNotificacion("Buscando tu ubicación...");
+
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+
+            if (marcadorUsuarioEstancos) {
+                marcadorUsuarioEstancos.setLatLng([lat, lng]);
+            } else {
+                const iconoUsuario = L.divIcon({
+                    html: `
+                        <div class="user-location-marker">
+                            <div class="user-dot"></div>
+                            <div class="user-pulse"></div>
+                        </div>
+                    `,
+                    className: 'custom-user-icon',
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                });
+
+                marcadorUsuarioEstancos = L.marker([lat, lng], { icon: iconoUsuario }).addTo(mapaEstancos);
+                marcadorUsuarioEstancos.bindPopup("<b>Estás aquí</b><br>Busca el estanco más cercano fuera de zona.");
+            }
+
+            mapaEstancos.flyTo([lat, lng], 17, { animate: true, duration: 1.5 });
+            marcadorUsuarioEstancos.openPopup();
+        },
+        (err) => {
+            console.error("Error de geolocalización:", err);
+            alert("No se pudo obtener tu ubicación.");
+        },
+        { enableHighAccuracy: true }
+    );
 }
 
 function configurarBuscadorEstancos() {
