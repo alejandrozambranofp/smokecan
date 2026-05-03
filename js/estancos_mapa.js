@@ -15,13 +15,15 @@ const datosEstancos = [
 
 // Base de datos de Zonas Libres de Humo (Las mismas del mapa principal)
 const zonasLibresDeHumo = [
-    { nombre: "Parc de la Mariona", lat: 41.4056, lng: 2.0220, radio: 110 },
-    { nombre: "Parc del Pont de la Cadena", lat: 41.4128, lng: 2.0145, radio: 85 },
-    { nombre: "CAP Molins de Rei", lat: 41.4145, lng: 2.0223, radio: 65 },
-    { nombre: "Ajuntament de Molins", lat: 41.4139, lng: 2.0158, radio: 50 },
-    { nombre: "Escola Josep Maria Madorell", lat: 41.4129, lng: 2.0187, radio: 75 },
-    { nombre: "Passeig de Pi i Margall", lat: 41.4136, lng: 2.0164, radio: 90 },
-    { nombre: "Terraza El Racó", lat: 41.4148, lng: 2.0170, radio: 30 }
+    { nombre: "CAP Molins de Rei", lat: 41.418514, lng: 2.012755, radio: 75 },
+    { nombre: "Parc de la Mariona", lat: 41.405747, lng: 2.021982, radio: 110 },
+    { nombre: "Escola El Palau", lat: 41.411630, lng: 2.016379, radio: 80 },
+    { nombre: "Institut Bernat el Ferrer", lat: 41.410682, lng: 2.027206, radio: 100 },
+    { nombre: "Escola l'Alzina", lat: 41.414016, lng: 2.022790, radio: 70 },
+    { nombre: "Escola Castell Ciuró", lat: 41.411030, lng: 2.026207, radio: 75 },
+    { nombre: "Escola Pont de la Cadena", lat: 41.406292, lng: 2.018489, radio: 85 },
+    { nombre: "Parc de la Sèquia del Molí", lat: 41.417575, lng: 2.014021, radio: 90 },
+    { nombre: "Escola la Sínia", lat: 41.41836, lng: 2.01169, radio: 80 }
 ];
 
 function iniciarMapaEstancos() {

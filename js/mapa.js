@@ -9,15 +9,15 @@ const centroMolins = [41.4137, 2.0158];
 // Base de datos de Puntos y Zonas
 const baseDeDatos = {
     zonas: [
-        { nombre: "Parc de la Mariona", lat: 41.4056, lng: 2.0220, radio: 110, tipo: "parque", nivel: "prohibido" },
-        { nombre: "Parc del Pont de la Cadena", lat: 41.4128, lng: 2.0145, radio: 85, tipo: "parque", nivel: "prohibido" },
-        { nombre: "CAP Molins de Rei (Hospital)", lat: 41.4145, lng: 2.0223, radio: 65, tipo: "hospital", nivel: "prohibido" },
-        { nombre: "Ajuntament de Molins", lat: 41.4139, lng: 2.0158, radio: 50, tipo: "edificio", nivel: "prohibido" },
-        { nombre: "Escola Josep Maria Madorell", lat: 41.4129, lng: 2.0187, radio: 75, tipo: "colegio", nivel: "prohibido" },
-        { nombre: "Passeig de Pi i Margall", lat: 41.4136, lng: 2.0164, radio: 90, tipo: "terraza", nivel: "no-recomendado" },
-        { nombre: "Terraza El Racó", lat: 41.4148, lng: 2.0170, radio: 30, tipo: "terraza", nivel: "no-recomendado" },
-        { nombre: "Biblioteca El Molí", lat: 41.4128, lng: 2.0146, radio: 55, tipo: "edificio", nivel: "prohibido" },
-        { nombre: "Zona Deportiva Municipal", lat: 41.4155, lng: 2.0177, radio: 110, tipo: "parque", nivel: "prohibido" }
+        { nombre: "CAP Molins de Rei", lat: 41.418514, lng: 2.012755, radio: 75, tipo: "hospital", nivel: "prohibido" },
+        { nombre: "Parc de la Mariona", lat: 41.405747, lng: 2.021982, radio: 110, tipo: "parque", nivel: "prohibido" },
+        { nombre: "Escola El Palau", lat: 41.411630, lng: 2.016379, radio: 80, tipo: "colegio", nivel: "prohibido" },
+        { nombre: "Institut Bernat el Ferrer", lat: 41.410682, lng: 2.027206, radio: 100, tipo: "colegio", nivel: "prohibido" },
+        { nombre: "Escola l'Alzina", lat: 41.414016, lng: 2.022790, radio: 70, tipo: "colegio", nivel: "prohibido" },
+        { nombre: "Escola Castell Ciuró", lat: 41.411030, lng: 2.026207, radio: 75, tipo: "colegio", nivel: "prohibido" },
+        { nombre: "Escola Pont de la Cadena", lat: 41.406292, lng: 2.018489, radio: 85, tipo: "colegio", nivel: "prohibido" },
+        { nombre: "Parc de la Sèquia del Molí", lat: 41.417575, lng: 2.014021, radio: 90, tipo: "parque", nivel: "prohibido" },
+        { nombre: "Escola la Sínia", lat: 41.41836, lng: 2.01169, radio: 80, tipo: "colegio", nivel: "prohibido" }
     ],
     puntos: [
         { nombre: "Estanco Passeig de Pi i Margall", lat: 41.4136, lng: 2.0164, tipo: "estanco" },
