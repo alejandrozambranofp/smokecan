@@ -1,10 +1,10 @@
 <?php
 // conexion.php
 
-$servidor = "localhost";
-$usuario_db = "root";     // Usuario por defecto en local
-$password_db = "";        // Contraseña por defecto (vacía en XAMPP)
-$nombre_db = "smokecan";  // Tu base de datos real
+$servidor = getenv('DB_HOST') ?: "localhost";
+$usuario_db = getenv('DB_USER') ?: "root";
+$password_db = getenv('DB_PASS') ?: "";
+$nombre_db = getenv('DB_NAME') ?: "smokecan";
 
 // Intentar conectar
 $conn = new mysqli($servidor, $usuario_db, $password_db, $nombre_db);

@@ -82,9 +82,7 @@ $comentarios = $conn->query("SELECT * FROM comentarios ORDER BY fecha DESC");
             <div class="logo">
                 <a href="index.html"><img src="img/smokecan-logo.png" alt="Logo SMOKECAN"></a>
             </div>
-            <div class="usuario-circulo">
-                <a href="logout.php"><i class="fa fa-sign-out-alt"></i></a>
-            </div>
+            <div></div>
         </div>
         <nav class="cabecera-navegacion">
             <div class="enlaces-nav">

@@ -82,6 +82,21 @@ $sql_zonas_oficiales = "CREATE TABLE IF NOT EXISTS zonas_oficiales (
 
 if ($conn->query($sql_zonas_oficiales) === TRUE) {
     echo "Tabla 'zonas_oficiales' creada o ya existe.\n";
+    
+    // Insertar zonas oficiales si la tabla está vacía
+    $check = $conn->query("SELECT COUNT(*) as total FROM zonas_oficiales");
+    $row = $check->fetch_assoc();
+    if ($row['total'] == 0) {
+        $sql_insert = "INSERT INTO zonas_oficiales (nombre, lat, lng, radio, tipo, nivel) VALUES 
+            ('Hospital de Molins', 41.4115, 2.0165, 100, 'hospital', 'prohibido'),
+            ('Parc de la Mariona', 41.4145, 2.0135, 80, 'parque', 'prohibido'),
+            ('Escola El Palau', 41.4125, 2.0150, 70, 'colegio', 'prohibido'),
+            ('Biblioteca El Molí', 41.4155, 2.0175, 50, 'terraza', 'no_recomendado')";
+        
+        if ($conn->query($sql_insert) === TRUE) {
+            echo "Zonas oficiales insertadas con éxito.\n";
+        }
+    }
 } else {
     echo "Error creando tabla zonas_oficiales: " . $conn->error . "\n";
 }

@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: smokecan_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: smokecan
+      MYSQL_USER: user_smokecan
+      MYSQL_PASSWORD: user_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  php:
+    build: .
+    container_name: smokecan_app
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: db
+      DB_USER: user_smokecan
+      DB_PASS: user_password
+      DB_NAME: smokecan
+    depends_on:
+      - db
+
+volumes:
+  db_data:

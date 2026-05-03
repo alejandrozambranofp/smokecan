@@ -155,6 +155,31 @@ function dibujarZonaUsuario(zona) {
     marcadoresUsuarios.push(circulo);
 }
 
+function mostrarPopupCrearZona(latlng) {
+    // Solo permitir si el usuario está logueado
+    if (document.cookie.indexOf('usuario_logeado=1') === -1) {
+        L.popup()
+            .setLatLng(latlng)
+            .setContent('<div style="text-align:center; padding:10px;"><b>¡Únete a la comunidad!</b><br>Inicia sesión para marcar esta zona como libre de humo.<br><br><a href="login.php" style="background:#00796B; color:white; padding:5px 10px; border-radius:15px; text-decoration:none; font-size:12px;">Iniciar Sesión</a></div>')
+            .openOn(mapaPrincipal);
+        return;
+    }
+
+    if (marcadorTemporal) {
+        mapaPrincipal.removeLayer(marcadorTemporal);
+    }
+
+    marcadorTemporal = L.marker(latlng).addTo(mapaPrincipal);
+    
+    marcadorTemporal.bindPopup(`
+        <div style="text-align:center; min-width: 150px;">
+            <b style="color:#00796B;">¿Quieres marcar este punto?</b><br>
+            <p style="font-size:11px; margin:10px 0;">Ayuda a otros indicando que aquí no se fuma.</p>
+            <button onclick="confirmarNuevaZona(${latlng.lat}, ${latlng.lng})" style="background:#00796B; color:white; border:none; padding:8px 15px; border-radius:20px; cursor:pointer; width:100%;">Confirmar Punto</button>
+        </div>
+    `).openPopup();
+}
+
 function confirmarNuevaZona(lat, lng) {
     fetch('guardar_zona.php', {
         method: 'POST',
