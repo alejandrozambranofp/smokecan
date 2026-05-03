@@ -1,7 +1,9 @@
 let mapaPrincipal;
 let circulosZonas = [];
 let marcadoresPuntos = [];
+let marcadoresUsuarios = []; // Nuevas zonas marcadas por usuarios
 let marcadorUsuario;
+let marcadorTemporal; // Para cuando el usuario hace clic para crear una zona
 
 // Coordenadas centrales de Molins de Rei
 const centroMolins = [41.4137, 2.0158];
@@ -50,6 +52,13 @@ function iniciarMapa() {
     setTimeout(() => { mapaPrincipal.invalidateSize(); }, 200);
 
     dibujarMapa('todos');
+    cargarZonasUsuarios(); // Cargar zonas de la comunidad
+
+    // Evento de clic en el mapa para añadir zona
+    mapaPrincipal.on('click', function(e) {
+        mostrarPopupCrearZona(e.latlng);
+    });
+
     // configurarBuscadorPrincipal();
 }
 
@@ -108,6 +117,107 @@ function dibujarMapa(filtro) {
                 </div>
             `);
             marcadoresPuntos.push(marcador);
+        }
+    });
+}
+
+function cargarZonasUsuarios() {
+    fetch('obtener_zonas_usuarios.php')
+        .then(res => res.json())
+        .then(zonas => {
+            // Limpiar anteriores
+            marcadoresUsuarios.forEach(m => mapaPrincipal.removeLayer(m));
+            marcadoresUsuarios = [];
+
+            zonas.forEach(zona => {
+                const totalVotos = parseInt(zona.votos_si) + parseInt(zona.votos_no);
+                const porcentajeSi = totalVotos > 0 ? Math.round((zona.votos_si / totalVotos) * 100) : 0;
+                
+                // Color basado en veracidad (verde si es muy votado, gris si es nuevo o dudoso)
+                const colorVeracidad = porcentajeSi > 70 ? '#00796B' : '#757575';
+
+                const circulo = L.circle([zona.lat, zona.lng], {
+                    color: colorVeracidad,
+                    fillColor: colorVeracidad,
+                    fillOpacity: 0.2,
+                    radius: 50,
+                    dashArray: '5, 10' // Línea discontinua para indicar que es de usuario
+                }).addTo(mapaPrincipal);
+
+                circulo.bindPopup(`
+                    <div style="text-align:center; min-width: 180px;">
+                        <div style="background:#424242; color:white; padding:5px; border-radius:5px 5px 0 0; font-weight:bold; font-size:12px;">
+                            ZONA REPORTADA POR USUARIO
+                        </div>
+                        <div style="padding:10px; border:1px solid #424242; border-top:none;">
+                            <b style="color:#00796B;">Zona marcada recientemente</b><br>
+                            <small>Por: ${zona.autor}</small><br>
+                            <hr style="margin:8px 0; opacity:0.1;">
+                            <div style="margin-bottom:10px;">
+                                <b>¿Es esta zona libre de humo?</b><br>
+                                <small>${zona.votos_si} Sí | ${zona.votos_no} No</small>
+                            </div>
+                            <div style="display:flex; gap:5px; justify-content:center;">
+                                <button onclick="votarZona(${zona.id}, 1)" style="background:#00796B; color:white; border:none; padding:5px 10px; border-radius:15px; cursor:pointer; font-size:11px;"><i class="fa fa-check"></i> Sí</button>
+                                <button onclick="votarZona(${zona.id}, 0)" style="background:#d32f2f; color:white; border:none; padding:5px 10px; border-radius:15px; cursor:pointer; font-size:11px;"><i class="fa fa-times"></i> No</button>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                marcadoresUsuarios.push(circulo);
+            });
+        });
+}
+
+function mostrarPopupCrearZona(latlng) {
+    // Si ya hay un marcador temporal, lo movemos
+    if (marcadorTemporal) {
+        marcadorTemporal.setLatLng(latlng);
+    } else {
+        marcadorTemporal = L.marker(latlng).addTo(mapaPrincipal);
+    }
+
+    marcadorTemporal.bindPopup(`
+        <div style="text-align:center; padding:5px;">
+            <b>¿Quieres marcar este punto como zona libre de humo?</b><br>
+            <p style="font-size:12px; color:#666; margin:8px 0;">Ayuda a la comunidad reportando nuevas zonas.</p>
+            <button onclick="confirmarNuevaZona(${latlng.lat}, ${latlng.lng})" style="background:#00796B; color:white; border:none; padding:8px 15px; border-radius:20px; cursor:pointer; font-weight:bold;">Sí, marcar zona</button>
+        </div>
+    `).openPopup();
+}
+
+function confirmarNuevaZona(lat, lng) {
+    fetch('guardar_zona.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lat: lat, lng: lng })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            mostrarNotificacion("¡Zona marcada con éxito!");
+            mapaPrincipal.removeLayer(marcadorTemporal);
+            marcadorTemporal = null;
+            cargarZonasUsuarios();
+        } else {
+            alert(data.message);
+        }
+    });
+}
+
+function votarZona(id, valor) {
+    fetch('votar_zona.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ zona_id: id, voto: valor })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            mostrarNotificacion("¡Voto registrado!");
+            cargarZonasUsuarios();
+        } else {
+            alert(data.message);
         }
     });
 }

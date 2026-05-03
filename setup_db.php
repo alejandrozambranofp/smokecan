@@ -32,5 +32,38 @@ if ($conn->query($sql_usuario) === TRUE) {
     echo "Error creando tabla usuario: " . $conn->error . "\n";
 }
 
+// Nueva tabla para zonas marcadas por usuarios
+$sql_zonas_user = "CREATE TABLE IF NOT EXISTS zonas_usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    lat DOUBLE NOT NULL,
+    lng DOUBLE NOT NULL,
+    usuario_id INT NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+)";
+
+if ($conn->query($sql_zonas_user) === TRUE) {
+    echo "Tabla 'zonas_usuarios' creada o ya existe.\n";
+} else {
+    echo "Error creando tabla zonas_usuarios: " . $conn->error . "\n";
+}
+
+// Nueva tabla para votos de veracidad
+$sql_votos = "CREATE TABLE IF NOT EXISTS votos_zonas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    zona_id INT NOT NULL,
+    usuario_id INT NOT NULL,
+    voto TINYINT NOT NULL, -- 1 para SI, 0 para NO
+    UNIQUE KEY (zona_id, usuario_id),
+    FOREIGN KEY (zona_id) REFERENCES zonas_usuarios(id),
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+)";
+
+if ($conn->query($sql_votos) === TRUE) {
+    echo "Tabla 'votos_zonas' creada o ya existe.\n";
+} else {
+    echo "Error creando tabla votos_zonas: " . $conn->error . "\n";
+}
+
 $conn->close();
 ?>
