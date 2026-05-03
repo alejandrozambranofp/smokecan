@@ -13,19 +13,6 @@ const datosEstancos = [
     { nombre: "Tabacs L'Estanc Jacint Verdaguer", lat: 41.4150, lng: 2.0145, direccion: "Carrer Jacint Verdaguer" } 
 ];
 
-// Base de datos de Zonas Libres de Humo (Las mismas del mapa principal)
-const zonasLibresDeHumo = [
-    { nombre: "CAP Molins de Rei", lat: 41.418514, lng: 2.012755, radio: 75 },
-    { nombre: "Parc de la Mariona", lat: 41.405747, lng: 2.021982, radio: 110 },
-    { nombre: "Escola El Palau", lat: 41.411630, lng: 2.016379, radio: 80 },
-    { nombre: "Institut Bernat el Ferrer", lat: 41.410682, lng: 2.027206, radio: 100 },
-    { nombre: "Escola l'Alzina", lat: 41.414016, lng: 2.022790, radio: 70 },
-    { nombre: "Escola Castell Ciuró", lat: 41.411030, lng: 2.026207, radio: 75 },
-    { nombre: "Escola Pont de la Cadena", lat: 41.406292, lng: 2.018489, radio: 85 },
-    { nombre: "Parc de la Sèquia del Molí", lat: 41.417575, lng: 2.014021, radio: 90 },
-    { nombre: "Escola la Sínia", lat: 41.41836, lng: 2.01169, radio: 80 }
-];
-
 function iniciarMapaEstancos() {
     // 1. Inicializar el mapa en el contenedor de estancos
     mapaEstancos = L.map('mapa-estancos-contenedor').setView(centroMolins, 15);
@@ -39,7 +26,7 @@ function iniciarMapaEstancos() {
     // Evitar que el mapa se vea cortado al cargar
     setTimeout(() => { mapaEstancos.invalidateSize(); }, 200);
 
-    // 3. Dibujar inicialmente todo
+    // 3. Dibujar inicialmente todo desde la DB
     dibujarMapaEstancos('todos');
 
     // 6. Configurar el buscador de la página de estancos
@@ -53,24 +40,39 @@ function dibujarMapaEstancos(filtro) {
     marcadoresEstancos = [];
     circulosZonasEstancos = [];
 
-    // 1. Dibujar Zonas Libres de Humo (Verdes)
-    if (filtro === 'todos' || filtro === 'zona') {
-        zonasLibresDeHumo.forEach(zona => {
-            const color = zona.radio > 60 ? '#00796B' : '#4db6ac';
-            const circulo = L.circle([zona.lat, zona.lng], {
-                color: color,
-                fillColor: color,
-                fillOpacity: 0.25,
-                radius: zona.radio
-            }).bindPopup(`
-                <div style="text-align:center;">
-                    <b style="color: ${color};">🚫 ${zona.nombre}</b><br>
-                    <span style="font-size: 12px; color: #666;">Zona Protegida</span>
-                </div>
-            `).addTo(mapaEstancos);
-            circulosZonasEstancos.push(circulo);
+    // Cargar todas las zonas desde la base de datos
+    fetch('obtener_todas_las_zonas.php')
+        .then(res => res.json())
+        .then(zonas => {
+            zonas.forEach(zona => {
+                let coincideFiltro = filtro === 'todos' || filtro === 'zona';
+                if (!coincideFiltro) return;
+
+                if (zona.origen === 'oficial') {
+                    const color = zona.nivel === 'prohibido' ? '#d32f2f' : '#fbc02d';
+                    const circulo = L.circle([zona.lat, zona.lng], {
+                        color: color,
+                        fillColor: color,
+                        fillOpacity: 0.2,
+                        radius: zona.radio
+                    }).addTo(mapaEstancos).bindPopup(`<b>${zona.nombre}</b><br>Zona oficial`);
+                    circulosZonasEstancos.push(circulo);
+                } else {
+                    const totalVotos = parseInt(zona.votos_si) + parseInt(zona.votos_no);
+                    const porcentajeSi = totalVotos > 0 ? Math.round((zona.votos_si / totalVotos) * 100) : 0;
+                    const colorVeracidad = porcentajeSi > 70 ? '#00796B' : '#757575';
+
+                    const circulo = L.circle([zona.lat, zona.lng], {
+                        color: colorVeracidad,
+                        fillColor: colorVeracidad,
+                        fillOpacity: 0.2,
+                        radius: 60,
+                        dashArray: '5, 10'
+                    }).addTo(mapaEstancos).bindPopup(`<b>Zona de Usuario</b><br>Reportada por: ${zona.autor}`);
+                    circulosZonasEstancos.push(circulo);
+                }
+            });
         });
-    }
 
     // 2. Dibujar los Estancos (Marcadores con icono de cigarrillo)
     if (filtro === 'todos' || filtro === 'estanco') {
@@ -96,27 +98,27 @@ function dibujarMapaEstancos(filtro) {
     }
 
     // Conectar botones "Ir" (solo si están visibles los estancos)
-    const botonesIr = document.querySelectorAll('.estanco-btn');
-    botonesIr.forEach(boton => {
-        boton.replaceWith(boton.cloneNode(true)); // Limpiar eventos anteriores
-    });
-    
-    document.querySelectorAll('.estanco-btn').forEach(boton => {
-        boton.addEventListener('click', (e) => {
-            const index = e.target.getAttribute('data-index');
-            if (index !== null && datosEstancos[index]) {
-                const estanco = datosEstancos[index];
-                if (filtro !== 'todos' && filtro !== 'estanco') {
-                    // Si no están visibles, los mostramos para poder ir
-                    dibujarMapaEstancos('todos');
-                }
-                mapaEstancos.flyTo([estanco.lat, estanco.lng], 18, { animate: true, duration: 1.5 });
-                // Re-buscar el marcador en la lista actualizada
-                const marker = marcadoresEstancos.find(m => m.getLatLng().lat === estanco.lat && m.getLatLng().lng === estanco.lng);
-                if (marker) marker.openPopup();
-            }
+    setTimeout(() => {
+        const botonesIr = document.querySelectorAll('.estanco-btn');
+        botonesIr.forEach(boton => {
+            boton.replaceWith(boton.cloneNode(true)); // Limpiar eventos anteriores
         });
-    });
+        
+        document.querySelectorAll('.estanco-btn').forEach(boton => {
+            boton.addEventListener('click', (e) => {
+                const index = e.target.getAttribute('data-index');
+                if (index !== null && datosEstancos[index]) {
+                    const estanco = datosEstancos[index];
+                    if (filtro !== 'todos' && filtro !== 'estanco') {
+                        dibujarMapaEstancos('todos');
+                    }
+                    mapaEstancos.flyTo([estanco.lat, estanco.lng], 18, { animate: true, duration: 1.5 });
+                    const marker = marcadoresEstancos.find(m => m.getLatLng().lat === estanco.lat && m.getLatLng().lng === estanco.lng);
+                    if (marker) marker.openPopup();
+                }
+            });
+        });
+    }, 500);
 }
 
 function filtrarEstancos(tipo) {

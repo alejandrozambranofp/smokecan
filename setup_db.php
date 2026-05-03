@@ -65,5 +65,22 @@ if ($conn->query($sql_votos) === TRUE) {
     echo "Error creando tabla votos_zonas: " . $conn->error . "\n";
 }
 
+// Nueva tabla para zonas oficiales (migración de las harcoded)
+$sql_zonas_oficiales = "CREATE TABLE IF NOT EXISTS zonas_oficiales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    lat DOUBLE NOT NULL,
+    lng DOUBLE NOT NULL,
+    radio INT NOT NULL,
+    tipo VARCHAR(50),
+    nivel VARCHAR(50) DEFAULT 'prohibido'
+)";
+
+if ($conn->query($sql_zonas_oficiales) === TRUE) {
+    echo "Tabla 'zonas_oficiales' creada o ya existe.\n";
+} else {
+    echo "Error creando tabla zonas_oficiales: " . $conn->error . "\n";
+}
+
 $conn->close();
 ?>
