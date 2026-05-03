@@ -40,8 +40,8 @@ function dibujarMapaEstancos(filtro) {
     marcadoresEstancos = [];
     circulosZonasEstancos = [];
 
-    // Cargar todas las zonas desde la base de datos
-    fetch('obtener_todas_las_zonas.php')
+    // Cargar todas las zonas desde la base de datos con cache-breaker
+    fetch('obtener_todas_las_zonas.php?t=' + new Date().getTime())
         .then(res => res.json())
         .then(zonas => {
             zonas.forEach(zona => {

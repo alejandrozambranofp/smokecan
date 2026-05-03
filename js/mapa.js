@@ -48,7 +48,7 @@ function iniciarMapa() {
 }
 
 function cargarZonasDesdeDB(filtro = 'todos') {
-    fetch('obtener_todas_las_zonas.php')
+    fetch('obtener_todas_las_zonas.php?t=' + new Date().getTime())
         .then(res => res.json())
         .then(zonas => {
             // Limpiar capas actuales

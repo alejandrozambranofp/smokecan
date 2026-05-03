@@ -1,6 +1,9 @@
 <?php
 require 'conexion.php';
 
+// Desactivar caché del navegador
+header("Cache-Control: no-cache, must-revalidate"); 
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); 
 header('Content-Type: application/json');
 
 // 1. Obtener zonas oficiales
