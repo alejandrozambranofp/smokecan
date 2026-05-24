@@ -1,29 +1,29 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. Buscamos el contenedor del icono de usuario
+document.addEventListener('DOMContentLoaded', async function() {
     const contenedorUsuario = document.querySelector('.icono-usuario');
     const enlaceUsuario = document.querySelector('.usuario-circulo a');
-    
-    // 2. Función para comprobar si existe la cookie de logueo
-    const obtenerCookie = (nombre) => {
-        const valor = `; ${document.cookie}`;
-        const partes = valor.split(`; ${nombre}=`);
-        if (partes.length === 2) return partes.pop().split(';').shift();
-    };
 
-    const estaLogueado = obtenerCookie('usuario_logeado');
-    const rol = obtenerCookie('usuario_rol');
+    let estadoSesion = { logeado: false, es_admin: false };
 
-    // 3. Lógica para el área de usuario (perfil / iniciar sesión)
+    try {
+        const respuesta = await fetch('auth_status.php', {
+            credentials: 'same-origin',
+            cache: 'no-store'
+        });
+
+        if (respuesta.ok) {
+            estadoSesion = await respuesta.json();
+        }
+    } catch (error) {
+        console.error('No se pudo comprobar la sesion:', error);
+    }
+
     if (contenedorUsuario) {
-        if (estaLogueado === "1") {
-            // Si está logueado, nos aseguramos de que el icono lleve al perfil
+        if (estadoSesion.logeado) {
             if (enlaceUsuario) {
                 enlaceUsuario.href = 'perfil.php';
-                // Añadimos un borde verde para indicar sesión activa
-                enlaceUsuario.parentElement.style.border = "2px solid #00796B";
-                
-                // Si es admin, añadir el enlace al panel en la navegación
-                if (rol === 'admin') {
+                enlaceUsuario.parentElement.style.border = '2px solid #00796B';
+
+                if (estadoSesion.es_admin) {
                     const navLinks = document.querySelector('.enlaces-nav');
                     if (navLinks && !document.getElementById('nav-admin-link')) {
                         const adminLink = document.createElement('div');
@@ -35,21 +35,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         } else {
-            // Si no está logueado, reemplazamos el círculo por un botón de "Iniciar sesión"
             contenedorUsuario.innerHTML = `
                 <a href="login.php" style="
-                    background-color: white; 
-                    color: #00796B; 
-                    padding: 8px 15px; 
-                    border-radius: 20px; 
-                    text-decoration: none; 
+                    background-color: white;
+                    color: #00796B;
+                    padding: 8px 15px;
+                    border-radius: 20px;
+                    text-decoration: none;
                     font-weight: bold;
                     font-size: 14px;
                     white-space: nowrap;
                     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-                ">Iniciar sesión</a>
+                ">Iniciar sesion</a>
             `;
-            contenedorUsuario.style.width = 'auto'; // Ajustamos el ancho para el texto
+            contenedorUsuario.style.width = 'auto';
             contenedorUsuario.style.height = 'auto';
         }
     }

@@ -1,8 +1,11 @@
-/* estilo_registro.css */
+:root {
+    --verde-principal: #00796B;
+    --verde-oscuro: #004d40;
+}
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #e9ecef; 
+    background-color: #e9ecef;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,14 +13,13 @@ body {
     margin: 0;
 }
 
-/* Usamos la versión más ancha para el registro */
 .login-container {
     background-color: white;
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     width: 100%;
-    max-width: 400px; /* 400px para que quepa bien todo */
+    max-width: 400px;
     text-align: center;
 }
 
@@ -27,9 +29,8 @@ body {
     font-weight: 600;
 }
 
-/* IMPORTANTE: Aquí añadimos input[type="text"] para Nombre y Apellidos */
 input[type="text"],
-input[type="email"], 
+input[type="email"],
 input[type="password"] {
     width: 100%;
     padding: 12px;
@@ -40,20 +41,18 @@ input[type="password"] {
     transition: border-color 0.3s;
 }
 
-/* También aquí para el efecto al hacer click */
 input[type="text"]:focus,
-input[type="email"]:focus, 
+input[type="email"]:focus,
 input[type="password"]:focus {
-    border-color: #28a745;
+    border-color: var(--verde-principal);
     outline: none;
 }
 
-/* Estilos del botón */
 button {
     width: 100%;
     padding: 12px;
     margin-top: 15px;
-    background-color: #28a745;
+    background-color: var(--verde-principal);
     color: white;
     border: none;
     border-radius: 5px;
@@ -64,10 +63,31 @@ button {
 }
 
 button:hover {
-    background-color: #218838;
+    background-color: var(--verde-oscuro);
 }
 
-/* Mensajes de error y enlaces */
+.btn-volver-inicio {
+    display: block;
+    width: 100%;
+    padding: 11px;
+    margin-top: 12px;
+    color: var(--verde-principal);
+    background-color: white;
+    border: 1px solid var(--verde-principal);
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-volver-inicio:hover {
+    background-color: var(--verde-principal);
+    color: white;
+    text-decoration: none;
+}
+
 .error-msg {
     background-color: #f8d7da;
     color: #721c24;
@@ -79,13 +99,13 @@ button:hover {
 }
 
 .footer-links {
-    font-size: 13px; 
+    font-size: 13px;
     margin-top: 20px;
     color: #666;
 }
 
 .footer-links a {
-    color: #28a745;
+    color: var(--verde-principal);
     text-decoration: none;
 }
 

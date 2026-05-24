@@ -54,6 +54,9 @@ $mis_comentarios = $conn->query("SELECT * FROM comentarios WHERE usuario_id = $u
             <nav class="enlaces-nav">
                 <a href="index.html" class="enlace-item">Mapa</a>
                 <a href="perfil.php" class="enlace-item activo">Mi Perfil</a>
+                <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'admin'): ?>
+                    <a href="admin.php" class="enlace-item">Panel Admin</a>
+                <?php endif; ?>
                 <a href="index.html" class="enlace-item">Atras</a>
             </nav>
         </div>

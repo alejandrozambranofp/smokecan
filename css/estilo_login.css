@@ -1,12 +1,15 @@
-/* estilos.css */
+:root {
+    --verde-principal: #00796B;
+    --verde-oscuro: #004d40;
+}
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #e9ecef; /* Un gris un poco más moderno */
+    background-color: #e9ecef;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
 }
 
@@ -14,7 +17,7 @@ body {
     background-color: white;
     padding: 40px;
     border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15); /* Sombra más suave */
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     width: 320px;
     text-align: center;
 }
@@ -25,44 +28,63 @@ body {
     font-weight: 600;
 }
 
-/* Estilos de los inputs */
-input[type="email"], 
-input[type="password"] {
+.login-container input[type="email"],
+.login-container input[type="password"] {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
     border: 1px solid #ddd;
     border-radius: 5px;
     box-sizing: border-box;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-input[type="email"]:focus, 
-input[type="password"]:focus {
-    border-color: #28a745;
+.login-container input[type="email"]:focus,
+.login-container input[type="password"]:focus {
+    border-color: var(--verde-principal);
+    box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.14);
     outline: none;
 }
 
-/* Estilos del botón */
-button {
+.login-container button[type="submit"],
+.login-container .btn-volver-inicio {
+    display: block;
     width: 100%;
     padding: 12px;
-    margin-top: 15px;
-    background-color: #28a745;
-    color: white;
-    border: none;
     border-radius: 5px;
+    box-sizing: border-box;
     cursor: pointer;
     font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.2s;
 }
 
-button:hover {
-    background-color: #218838;
+.login-container button[type="submit"] {
+    margin-top: 15px;
+    background-color: var(--verde-principal);
+    color: white;
+    border: 1px solid var(--verde-principal);
 }
 
-/* Mensajes de error y enlaces */
+.login-container .btn-volver-inicio {
+    margin-top: 12px;
+    background-color: var(--verde-principal);
+    color: white;
+    border: 1px solid var(--verde-principal);
+    box-shadow: 0 6px 14px rgba(0, 121, 107, 0.18);
+}
+
+.login-container button[type="submit"]:hover,
+.login-container .btn-volver-inicio:hover {
+    background-color: var(--verde-oscuro);
+    border-color: var(--verde-oscuro);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(0, 77, 64, 0.22);
+}
+
 .error-msg {
     background-color: #f8d7da;
     color: #721c24;
@@ -74,16 +96,18 @@ button:hover {
 }
 
 .footer-links {
-    font-size: 13px; 
+    font-size: 13px;
     margin-top: 20px;
     color: #666;
 }
 
 .footer-links a {
-    color: #28a745;
+    color: var(--verde-principal);
     text-decoration: none;
+    font-weight: 600;
 }
 
 .footer-links a:hover {
+    color: var(--verde-oscuro);
     text-decoration: underline;
 }

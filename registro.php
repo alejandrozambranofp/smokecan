@@ -1,46 +1,35 @@
 <?php
-// ------------------------------------------------------------------
-// LÓGICA PHP
-// ------------------------------------------------------------------
 session_start();
 require 'conexion.php';
 
 $mensaje = "";
 $error = "";
 
-// Si ya está logueado, no debería ver el registro
 if (isset($_SESSION['usuario_id'])) {
     header("Location: bienvenida.php");
     exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    // 1. Recogemos los datos de entrada
     $nombre = trim($_POST['nombre']);
     $apellidos = trim($_POST['apellidos']);
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    // 2. Comprobamos si el email ya existe
     $stmt_check = $conn->prepare("SELECT id FROM usuario WHERE email = ?");
     $stmt_check->bind_param("s", $email);
     $stmt_check->execute();
     $resultado = $stmt_check->get_result();
 
     if ($resultado->num_rows > 0) {
-        $error = "Este correo electrónico ya está registrado.";
+        $error = "Este correo electronico ya esta registrado.";
     } else {
-        // 3. Encriptamos la contraseña
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-        // 4. Insertamos en la base de datos (usamos NOW() para la fecha actual)
         $stmt_insert = $conn->prepare("INSERT INTO usuario (nombre, apellidos, email, password, fecha_registro) VALUES (?, ?, ?, ?, NOW())");
         $stmt_insert->bind_param("ssss", $nombre, $apellidos, $email, $password_hash);
 
         if ($stmt_insert->execute()) {
-            // Éxito: Redirigimos al login con un parámetro para mostrar mensaje
-            // Opcional: Podrías loguearlo automáticamente aquí si quisieras
             header("Location: login.php?registrado=1");
             exit();
         } else {
@@ -59,7 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/estilo_registro.css">
 </head>
 <body>
-
     <div class="login-container">
         <h2>Crear una Cuenta</h2>
 
@@ -70,17 +58,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="registro.php" method="POST">
             <input type="text" name="nombre" placeholder="Nombre" required>
             <input type="text" name="apellidos" placeholder="Apellidos" required>
-            
-            <input type="email" name="email" placeholder="Correo electrónico" required>
-            <input type="password" name="password" placeholder="Contraseña" required minlength="6">
-            
+            <input type="email" name="email" placeholder="Correo electronico" required>
+            <input type="password" name="password" placeholder="Contrasena" required minlength="6">
             <button type="submit">Registrarse</button>
         </form>
 
         <div class="footer-links">
-            ¿Ya tienes cuenta? <a href="login.php">Inicia sesión aquí</a>
+            Ya tienes cuenta? <a href="login.php">Inicia sesion aqui</a>
         </div>
+        <a href="index.html" class="btn-volver-inicio">Volver a inicio</a>
     </div>
-
 </body>
 </html>
