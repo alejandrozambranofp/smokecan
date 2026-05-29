@@ -12,7 +12,7 @@ $resultado = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foro SmokeCan: Opiniones por zonas</title>
-    <link rel="icon" type="image/png" href="img/smokecan-logo.png">
+    <link rel="icon" type="image/png" href="img/smokecan-logo.svg">
     
     <link rel="stylesheet" href="css/style.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -23,12 +23,12 @@ $resultado = $conn->query($sql);
         <div class="cabecera-principal">
             <div></div>
             <div class="logo">
-                <a href="index.html"><img src="img/smokecan-logo.png" alt="Logo SMOKECAN"></a>
+                <a href="index.html"><img src="img/smokecan-logo.svg" alt="Logo SMOKECAN"></a>
             </div>
             
             <div class="icono icono-usuario">
                 <div class="usuario-circulo">
-                    <a href="login.php"> <img src="img/icono-usuario.png" alt="Usuario">
+                    <a href="login.php"> <img src="img/icono-usuario.svg" alt="Usuario">
                     </a>
                 </div>
             </div>
@@ -156,16 +156,6 @@ $resultado = $conn->query($sql);
             <div class="footer-columna">
                 <h3 class="footer-titulo">Ayuda y Contacto</h3>
                 <p class="footer-texto">Contacto: smokecancompany@gmail.com</p>
-            </div>
-            <div class="footer-columna">
-                <h3 class="footer-titulo">Redes Sociales</h3>
-                <div class="redes-sociales">
-                    <a href="#" aria-label="Instagram" class="social-link"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" aria-label="X (Twitter)" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#" aria-label="Facebook" class="social-link"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#" aria-label="LinkedIn" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="#" aria-label="TikTok" class="social-link"><i class="fa-brands fa-tiktok"></i></a>
-                </div>
             </div>
         </div>
         <div class="footer-copyright">

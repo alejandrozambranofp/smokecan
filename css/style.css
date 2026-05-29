@@ -408,12 +408,14 @@ html, body {
 }
 
 .footer-titulo-principal {
+    color: #00796B;
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 5px;
 }
 
 .footer-titulo {
+    color: #00796B;
     font-size: 18px;
     font-weight: bold;
     margin-top: 0;
@@ -969,7 +971,7 @@ body {
 }
 
 .foro-publicar-btn { background: var(--verde-principal); color: white; }
-.foro-publicar-btn:hover { background: var(--verde-claro); }
+.foro-publicar-btn:hover { background: #009688; }
 
 .foro-contenido-grid {
     display: grid;
@@ -1032,7 +1034,7 @@ body {
     gap: 30px;
 }
 
-.footer-titulo, .footer-titulo-principal { color: var(--verde-claro); margin-bottom: 15px; }
+.footer-titulo, .footer-titulo-principal { color: #00796B !important; margin-bottom: 15px; }
 .footer-lista { list-style: none; padding: 0; }
 .footer-lista li { margin-bottom: 8px; }
 .footer-lista a { color: #bbb; text-decoration: none; font-size: 0.9em; }
@@ -1353,6 +1355,7 @@ button,
 }
 
 .foro-publicar-btn:hover {
+    background: #009688;
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 121, 107, 0.4);
 }
