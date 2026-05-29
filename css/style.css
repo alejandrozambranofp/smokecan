@@ -52,7 +52,8 @@ html, body {
     align-items: center;
 }
 .logo img {
-    height: 60px; 
+    height: 64px;
+    width: auto;
     max-width: 100%;
     display: block;
 }
@@ -887,7 +888,16 @@ body {
     padding: 10px 5%;
 }
 
-.logo img { height: 50px; }
+.logo img {
+    height: 64px;
+    width: auto;
+}
+
+@media (max-width: 600px) {
+    .logo img {
+        height: 48px;
+    }
+}
 
 .usuario-circulo img {
     width: 40px;

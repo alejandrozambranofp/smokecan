@@ -14,11 +14,9 @@ if ($resultado) {
     echo "<p>Se ha encontrado la tabla <strong>'usuario'</strong>.</p>";
     echo "<p>Actualmente hay <strong>" . $fila['total'] . "</strong> usuarios registrados.</p>";
     
-    // Verificamos si el campo password es seguro
     $check_col = $conn->query("SHOW COLUMNS FROM usuario LIKE 'password'");
     $col_info = $check_col->fetch_assoc();
     
-    // Extraemos el número del tipo (ej: varchar(255) -> 255)
     preg_match('/\d+/', $col_info['Type'], $matches);
     $longitud = $matches[0] ?? 0;
 

@@ -60,7 +60,7 @@ function cargarZonasDesdeDB(filtro = 'todos') {
             marcadoresUsuarios = [];
 
             zonas.forEach(zona => {
-                // Aplicar filtros (si es 'prohibido' mostramos hospitales, colegios, parques)
+               
                 let coincideFiltro = filtro === 'todos' || zona.tipo === filtro;
                 if (filtro === 'prohibido' && (zona.tipo === 'hospital' || zona.tipo === 'colegio' || zona.tipo === 'parque')) {
                     coincideFiltro = true;
@@ -220,11 +220,9 @@ function filtrarMarcadores(tipo) {
     const nombresFiltros = {
         'todos': 'Mostrando Todo',
         'prohibido': 'Zonas Prohibidas',
-        'terraza': 'Zonas No Recomendadas',
         'estanco': 'Estancos',
         'hospital': 'Hospitales',
-        'colegio': 'Colegios',
-        'bus': 'Paradas de Bus'
+        'colegio': 'Colegios'
     };
 
     mostrarNotificacion(nombresFiltros[tipo] || 'Filtro aplicado');
@@ -326,4 +324,4 @@ function localizarUsuario() {
     );
 }
 
-document.addEventListener('DOMContentLoaded', iniciarMapa);
+document.addEventListener('DOMContentLoaded', iniciarMapa);

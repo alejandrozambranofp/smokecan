@@ -75,7 +75,6 @@ $mis_comentarios = $conn->query("SELECT * FROM comentarios WHERE usuario_id = $u
                     <input type="text" value="<?php echo $_SESSION['email']; ?>" readonly>
                 </div>
                 <div class="perfil-acciones">
-                    <button type="button" class="btn-guardar">Actualizar Datos</button>
                     <a href="logout.php" class="btn-logout" style="text-decoration:none; display:block; margin-top:10px;">Cerrar Sesión</a>
                 </div>
             </form>
