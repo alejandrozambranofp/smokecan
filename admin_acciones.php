@@ -32,6 +32,7 @@ switch ($accion) {
         $conn->query("DELETE FROM comentarios WHERE usuario_id = $id");
         // Eliminar zonas del usuario
         $conn->query("DELETE FROM zonas_usuarios WHERE usuario_id = $id");
+        $conn->query("DELETE FROM zonas_para_fumar WHERE usuario_id = $id");
         
         $sql = "DELETE FROM usuario WHERE id = $id";
         break;
@@ -70,6 +71,17 @@ switch ($accion) {
 
     case 'aprobar_comentario':
         $sql = "UPDATE comentarios SET estado = 'aprobado' WHERE id = $id";
+        break;
+
+    case 'eliminar_zona':
+        // Primero eliminar votos asociados a la zona
+        $conn->query("DELETE FROM votos_zonas WHERE zona_id = $id");
+        // Luego eliminar la zona
+        $sql = "DELETE FROM zonas_usuarios WHERE id = $id";
+        break;
+
+    case 'eliminar_zona_fumar':
+        $sql = "DELETE FROM zonas_para_fumar WHERE id = $id";
         break;
 
     default:

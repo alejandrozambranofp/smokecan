@@ -6,30 +6,30 @@
     <title>Estancos Cercanos | Smokecan</title>
     <link rel="icon" type="image/png" href="img/smokecan-logo.png">
     
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 </head>
 <body>
     <header class="cabecera-contenedor">
         <div class="cabecera-principal">
-            <div></div>
+            <div class="cabecera-espacio-izq"></div>
             <div class="logo">
-                <a href="index.html"><img src="img/smokecan-logo.svg" alt="Logo SMOKECAN"></a>
+                <a href="index.html?v=8"><img src="img/smokecan-logo.svg" alt="Logo SMOKECAN"></a>
             </div>
-            
-            <div class="icono icono-usuario">
-                <div class="usuario-circulo">
-                    <a href="login.php"> <img src="img/icono-usuario.svg" alt="Usuario">
-                    </a>
-                </div>
-            </div>
+            <button class="btn-hamburguesa" id="btn-menu-hamburguesa" aria-label="Menú">
+                <span class="barra"></span>
+                <span class="barra"></span>
+                <span class="barra"></span>
+            </button>
+            <div class="cabecera-espacio-der"></div>
         </div>
         <nav class="cabecera-navegacion">
             <div class="enlaces-nav">
-                <div class="enlace-item"><a href="index.html">Mapa</a></div>
+                <div class="enlace-item"><a href="index.html?v=8">Mapa</a></div>
                 <div class="enlace-item"><a href="foro.php">Foro Smokecan</a></div>
                 <div class="enlace-item"><a href="estancos.html" class="activo">Estancos</a></div> 
+                <div class="enlace-item" id="nav-perfil-link"><a href="login.php">Mi Perfil</a></div>
             </div>
         </nav>
     </header>
@@ -117,6 +117,6 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="js/estancos_mapa.js"></script> 
-    <script src="js/auth.js"></script>
+    <script src="js/auth.js?v=8"></script>
 </body>
 </html>

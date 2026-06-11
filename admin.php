@@ -19,6 +19,19 @@ $usuarios = $conn->query("SELECT id, nombre, apellidos, email, rol, fecha_regist
 // Obtener comentarios
 $comentarios = $conn->query("SELECT * FROM comentarios ORDER BY fecha DESC");
 
+// Obtener zonas de usuarios
+$zonas = $conn->query("SELECT z.id, z.lat, z.lng, z.fecha, u.nombre, u.apellidos, 
+        (SELECT COUNT(*) FROM votos_zonas WHERE zona_id = z.id AND voto = 1) as votos_si,
+        (SELECT COUNT(*) FROM votos_zonas WHERE zona_id = z.id AND voto = 0) as votos_no
+        FROM zonas_usuarios z 
+        JOIN usuario u ON z.usuario_id = u.id 
+        ORDER BY z.fecha DESC");
+
+$zonas_fumar = $conn->query("SELECT z.id, z.lat, z.lng, z.fecha, z.nombre_sitio, u.nombre, u.apellidos 
+        FROM zonas_para_fumar z 
+        JOIN usuario u ON z.usuario_id = u.id 
+        ORDER BY z.fecha DESC");
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -26,7 +39,7 @@ $comentarios = $conn->query("SELECT * FROM comentarios ORDER BY fecha DESC");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Admin - Smokecan</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .admin-main { padding: 40px 5%; background: #f4f7f6; min-height: 100vh; }
@@ -79,16 +92,24 @@ $comentarios = $conn->query("SELECT * FROM comentarios ORDER BY fecha DESC");
 <body>
     <header class="cabecera-contenedor">
         <div class="cabecera-principal">
+            <div class="cabecera-espacio-izq"></div>
             <div class="logo">
-                <a href="index.html"><img src="img/smokecan-logo.png" alt="Logo SMOKECAN"></a>
+                <a href="index.html?v=8"><img src="img/smokecan-logo.svg" alt="Logo SMOKECAN"></a>
             </div>
-            <div></div>
+            <button class="btn-hamburguesa" id="btn-menu-hamburguesa" aria-label="Menú">
+                <span class="barra"></span>
+                <span class="barra"></span>
+                <span class="barra"></span>
+            </button>
+            <div class="cabecera-espacio-der"></div>
         </div>
         <nav class="cabecera-navegacion">
             <div class="enlaces-nav">
-                <div class="enlace-item"><a href="index.html">Mapa</a></div>
-                <div class="enlace-item"><a href="foro.php">Foro</a></div>
-                <div class="enlace-item"><a href="admin.php" class="activo">Panel Admin</a></div>
+                <div class="enlace-item"><a href="index.html?v=8">Mapa</a></div>
+                <div class="enlace-item"><a href="foro.php">Foro Smokecan</a></div>
+                <div class="enlace-item"><a href="estancos.html">Estancos</a></div>
+                <div class="enlace-item" id="nav-perfil-link"><a href="login.php">Mi Perfil</a></div>
+                <div class="enlace-item" id="nav-admin-link"><a href="admin.php" class="activo">Panel Admin</a></div>
             </div>
         </nav>
     </header>
@@ -193,6 +214,86 @@ $comentarios = $conn->query("SELECT * FROM comentarios ORDER BY fecha DESC");
                                 <?php endif; ?>
                                 <button class="btn-delete" onclick="eliminar('comentario', <?php echo $c['id']; ?>)">
                                     <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <h2>Gestión de Zonas Reportadas</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Ubicación</th>
+                            <th>Usuario</th>
+                            <th>Fecha</th>
+                            <th>Votos Sí</th>
+                            <th>Votos No</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while($z = $zonas->fetch_assoc()): ?>
+                        <tr>
+                            <td><strong>#<?php echo $z['id']; ?></strong></td>
+                            <td>
+                                <small>
+                                    <strong>Lat:</strong> <?php echo number_format($z['lat'], 4); ?><br>
+                                    <strong>Lng:</strong> <?php echo number_format($z['lng'], 4); ?>
+                                </small>
+                            </td>
+                            <td><?php echo $z['nombre'] . " " . $z['apellidos']; ?></td>
+                            <td><?php echo date('d/m/Y H:i', strtotime($z['fecha'])); ?></td>
+                            <td><span style="color: green; font-weight: bold;">+<?php echo $z['votos_si']; ?></span></td>
+                            <td><span style="color: red; font-weight: bold;">-<?php echo $z['votos_no']; ?></span></td>
+                            <td>
+                                <button class="btn-delete" onclick="eliminar('zona', <?php echo $z['id']; ?>)">
+                                    <i class="fa fa-trash"></i> Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <h2>Gestión de Zonas para Fumar</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Sitio</th>
+                            <th>Ubicación</th>
+                            <th>Usuario</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while($zf = $zonas_fumar->fetch_assoc()): ?>
+                        <tr>
+                            <td><strong>#<?php echo $zf['id']; ?></strong></td>
+                            <td><b><?php echo htmlspecialchars($zf['nombre_sitio']); ?></b></td>
+                            <td>
+                                <small>
+                                    <strong>Lat:</strong> <?php echo number_format($zf['lat'], 4); ?><br>
+                                    <strong>Lng:</strong> <?php echo number_format($zf['lng'], 4); ?>
+                                </small>
+                            </td>
+                            <td><?php echo htmlspecialchars($zf['nombre'] . " " . $zf['apellidos']); ?></td>
+                            <td><?php echo date('d/m/Y H:i', strtotime($zf['fecha'])); ?></td>
+                            <td>
+                                <button class="btn-delete" onclick="eliminar('zona_fumar', <?php echo $zf['id']; ?>)">
+                                    <i class="fa fa-trash"></i> Eliminar
                                 </button>
                             </td>
                         </tr>
@@ -307,5 +408,6 @@ $comentarios = $conn->query("SELECT * FROM comentarios ORDER BY fecha DESC");
             }
         }
     </script>
+    <script src="js/auth.js?v=8"></script>
 </body>
 </html>
